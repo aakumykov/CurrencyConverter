@@ -23,7 +23,7 @@ public class CurrencyViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void loadCountryFlag(String charCode) {
-        String countryCode = charCode.substring(0,1).toLowerCase();
+        String countryCode = charCode.substring(0,2).toLowerCase();
         String flagImageURL = "https://www.countryflags.io/"+countryCode+"/flat/64.png";
 
 //        Picasso.get().load(flagImageURL).into(mListItemBinding.flagView);
