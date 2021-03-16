@@ -48,7 +48,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
 
     public void onRefreshRequested() {
         if (!isLoading)
-            loadData();
+            loadData(true);
     }
 
 
@@ -65,12 +65,16 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
     }
 
     private void loadData() {
+        loadData(false);
+    }
+
+    private void loadData(boolean forceLoad) {
 
         mPageStateLiveData.setValue(ePageState.REFRESHING);
 
         Handler handler = new Handler(Looper.getMainLooper());
 
-        mCurrencyBoardProvider.getData(new CurrencyBoardProvider.iDataRetriveCallbacks() {
+        mCurrencyBoardProvider.getData(forceLoad, new CurrencyBoardProvider.iDataRetriveCallbacks() {
             @Override
             public void onDataRetriveSuccess(CurrencyBoard currencyBoard) {
                 handler.post(() -> {
@@ -88,5 +92,4 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
             }
         });
     }
-
 }

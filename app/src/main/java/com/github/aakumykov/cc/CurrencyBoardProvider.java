@@ -24,7 +24,12 @@ public class CurrencyBoardProvider {
         mDataSourceURL = dataSourceURL;
     }
 
-    public void getData(iDataRetriveCallbacks callbacks) {
+    public void getData(boolean forceLoad, iDataRetriveCallbacks callbacks) {
+
+        if (forceLoad) {
+            loadData(callbacks);
+            return;
+        }
 
         if (dataExists() && dataIsFresh())
             callbacks.onDataRetriveSuccess(mCurrencyBoard);
