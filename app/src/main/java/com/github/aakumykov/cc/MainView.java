@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.aakumykov.cc.data_models.CurrencyBoard;
 import com.github.aakumykov.cc.databinding.ActivityMainBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class MainView extends AppCompatActivity {
 
     private final String TAG = MainView.class.getSimpleName();
@@ -148,6 +152,18 @@ public class MainView extends AppCompatActivity {
     }
 
     private void updateView(CurrencyBoard currencyBoard) {
+
+        mViewBinding.infoView.setText(
+                date2string(
+                        currencyBoard.getTimestamp()
+                )
+        );
+
         mListAdapter.setList(currencyBoard.getCurrencyList());
+    }
+
+    private String date2string(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", new Locale("ru","RU"));
+        return format.format(date);
     }
 }

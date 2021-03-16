@@ -64,7 +64,6 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
             loadData();
     }
 
-
     private void loadData() {
 
         mPageStateLiveData.setValue(ePageState.REFRESHING);
