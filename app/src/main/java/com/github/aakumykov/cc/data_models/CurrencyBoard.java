@@ -2,7 +2,9 @@ package com.github.aakumykov.cc.data_models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class CurrencyBoard {
@@ -17,5 +19,9 @@ public class CurrencyBoard {
 
     public Date getTimestamp() {
         return mTimestamp;
+    }
+
+    public List<Currency> getCurrencyList() {
+        return new ArrayList<>(mCurrencyMap.values());
     }
 }

@@ -1,13 +1,17 @@
 package com.github.aakumykov.cc;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.aakumykov.cc.data_models.CurrencyBoard;
 import com.github.aakumykov.cc.databinding.ActivityMainBinding;
@@ -17,6 +21,7 @@ public class MainView extends AppCompatActivity {
     private final String TAG = MainView.class.getSimpleName();
     private ActivityMainBinding mViewBinding;
     private MainViewModel mViewModel;
+    private CurrencyList_DataAdapter mListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,7 @@ public class MainView extends AppCompatActivity {
 
         setContentView(mViewBinding.getRoot());
 
+
         mViewBinding.swipeRefreshLayout.setColorSchemeResources(
                 R.color.purple_200,
                 R.color.purple_700,
@@ -43,6 +49,13 @@ public class MainView extends AppCompatActivity {
         mViewBinding.swipeRefreshLayout.setOnRefreshListener(() -> {
 
         });
+
+
+        mListAdapter = new CurrencyList_DataAdapter();
+
+        mViewBinding.recyclerView.setAdapter(mListAdapter);
+        mViewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mViewBinding.recyclerView.addItemDecoration(prepareItemDecoration());
     }
 
     private void prepareViewModel() {
@@ -66,7 +79,7 @@ public class MainView extends AppCompatActivity {
         mViewModel.getCurrencyBoard().observe(this, new Observer<CurrencyBoard>() {
             @Override
             public void onChanged(CurrencyBoard currencyBoard) {
-                Log.d(TAG, "Курс валют обновился");
+                updateView(currencyBoard);
             }
         });
 
@@ -105,5 +118,24 @@ public class MainView extends AppCompatActivity {
     // TODO: уведомление об устаревших данных
     private void showToast(int stringResourceId) {
         Toast.makeText(this, stringResourceId, Toast.LENGTH_SHORT).show();
+    }
+
+    private RecyclerView.ItemDecoration prepareItemDecoration() {
+
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+
+        Drawable drawable = ResourcesCompat.getDrawable(
+                getResources(),
+                R.drawable.list_item_divider,
+                null
+        );
+
+        dividerItemDecoration.setDrawable(drawable);
+        return dividerItemDecoration;
+    }
+
+    private void updateView(CurrencyBoard currencyBoard) {
+        mListAdapter.setList(currencyBoard.getCurrencyList());
     }
 }
