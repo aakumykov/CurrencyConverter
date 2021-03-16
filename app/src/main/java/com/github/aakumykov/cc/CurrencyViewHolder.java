@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.aakumykov.cc.data_models.Currency;
 import com.github.aakumykov.cc.databinding.ListItemBinding;
+import com.squareup.picasso.Picasso;
 
 public class CurrencyViewHolder extends RecyclerView.ViewHolder {
 
@@ -26,6 +27,9 @@ public class CurrencyViewHolder extends RecyclerView.ViewHolder {
         String countryCode = charCode.substring(0,2).toLowerCase();
         String flagImageURL = "https://www.countryflags.io/"+countryCode+"/flat/64.png";
 
-//        Picasso.get().load(flagImageURL).into(mListItemBinding.flagView);
+        Picasso.get()
+                .load(flagImageURL)
+                .error(R.drawable.ic_country_flag_placeholder)
+                .into(mListItemBinding.flagView);
     }
 }
