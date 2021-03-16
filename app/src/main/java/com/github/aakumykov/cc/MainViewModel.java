@@ -18,6 +18,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
     private final MutableLiveData<String> mErrorMsgLiveData;
 
     private String mDataSourceURL;
+    private boolean isLoading = false;
     private CurrencyBoardProvider mCurrencyBoardProvider;
 
 
@@ -38,6 +39,16 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
 
     public MutableLiveData<String> getErrorMsg() {
         return mErrorMsgLiveData;
+    }
+
+
+    public void setDataSourceURL(String s) {
+        mDataSourceURL = s;
+    }
+
+    public void onRefreshRequested() {
+        if (!isLoading)
+            loadData();
     }
 
 
@@ -79,7 +90,4 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
         });
     }
 
-    public void setDataSourceURL(String s) {
-        mDataSourceURL = s;
-    }
 }

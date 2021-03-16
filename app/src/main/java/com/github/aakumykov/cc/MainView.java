@@ -47,7 +47,7 @@ public class MainView extends AppCompatActivity {
         );
 
         mViewBinding.swipeRefreshLayout.setOnRefreshListener(() -> {
-
+            mViewModel.onRefreshRequested();
         });
 
 
@@ -96,14 +96,26 @@ public class MainView extends AppCompatActivity {
     private void applyPageState(ePageState pageState) {
        switch (pageState) {
             case REFRESHING:
+                disableRefreshListener();
                 showRefreshThrobber();
                 break;
+
             case READY:
+                enableRefreshListener();
                 hideRefreshThrobber();
                 break;
+
             default:
                 throw new IllegalArgumentException("Unknown ePageState value: "+pageState);
         }
+    }
+
+    private void disableRefreshListener() {
+        mViewBinding.swipeRefreshLayout.setEnabled(false);
+    }
+
+    private void enableRefreshListener() {
+        mViewBinding.swipeRefreshLayout.setEnabled(true);
     }
 
     private void showRefreshThrobber() {
