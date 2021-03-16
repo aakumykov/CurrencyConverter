@@ -15,8 +15,7 @@ public class CurrencyBoard {
 
     public CurrencyBoard() {}
 
-    public int getValuteCount() {
-        return mCurrencyMap.size();
+    public Date getTimestamp() {
+        return mTimestamp;
     }
-
 }

@@ -2,6 +2,7 @@ package com.github.aakumykov.cc;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,10 +21,13 @@ public class MainView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mViewBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mViewBinding.getRoot());
 
         mViewModel = new ViewModelProvider.NewInstanceFactory().create(MainViewModel.class);
+        // TODO: брать из настроек
+        mViewModel.setDataSourceURL("https://www.cbr-xml-daily.ru/daily_json.js");
 
         mViewModel.getPageState().observe(this, new Observer<ePageState>() {
             @Override
@@ -43,6 +47,7 @@ public class MainView extends AppCompatActivity {
             @Override
             public void onChanged(String s) {
                 mViewBinding.errorView.setText(s);
+                mViewBinding.errorView.setVisibility(View.VISIBLE);
             }
         });
 

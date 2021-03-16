@@ -1,5 +1,8 @@
 package com.github.aakumykov.cc;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.MutableLiveData;
@@ -10,9 +13,12 @@ import com.github.aakumykov.cc.data_models.CurrencyBoard;
 
 public class MainViewModel extends ViewModel implements LifecycleObserver {
 
-    MutableLiveData<ePageState> pageStateLiveData;
-    MutableLiveData<CurrencyBoard> currencyBoardLiveData;
-    MutableLiveData<String> errorMsgLiveData;
+    private MutableLiveData<ePageState> pageStateLiveData;
+    private MutableLiveData<CurrencyBoard> currencyBoardLiveData;
+    private MutableLiveData<String> errorMsgLiveData;
+
+    private String mDataSourceURL;
+    private CurrencyBoardProvider mCurrencyBoardProvider;
 
     public MainViewModel() {
         this.pageStateLiveData = new MutableLiveData<>();
@@ -33,27 +39,44 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
         return errorMsgLiveData;
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    private void onViewCreated() {
+        if (null == mCurrencyBoardProvider)
+            mCurrencyBoardProvider = new CurrencyBoardProvider(mDataSourceURL);
+    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    private void onStart() {
-        if (null == currencyBoardLiveData.getValue() || CurrencyBoardProvider.dataIsExpired()) {
+    private void onViewStarted() {
+        if (null == currencyBoardLiveData.getValue())
+            loadData();
+    }
 
-            pageStateLiveData.setValue(ePageState.REFRESHING);
+    private void loadData() {
 
-            CurrencyBoardProvider.getBoard(new CurrencyBoardProvider.iDataLoadCallbacks() {
-                @Override
-                public void onDataLoadSuccess(CurrencyBoard currencyBoard) {
+        pageStateLiveData.setValue(ePageState.REFRESHING);
+
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        mCurrencyBoardProvider.getData(new CurrencyBoardProvider.iDataRetriveCallbacks() {
+            @Override
+            public void onDataRetriveSuccess(CurrencyBoard currencyBoard) {
+                handler.post(() -> {
                     pageStateLiveData.setValue(ePageState.READY);
                     currencyBoardLiveData.setValue(currencyBoard);
-                }
+                });
+            }
 
-                @Override
-                public void onDataLoadFailed(String errorMsg) {
+            @Override
+            public void onDataRetriveFailed(String errorMsg) {
+                handler.post(() -> {
                     pageStateLiveData.setValue(ePageState.READY);
                     errorMsgLiveData.setValue(errorMsg);
-                }
+                });
+            }
+        });
+    }
 
-            });
-        }
+    public void setDataSourceURL(String s) {
+        mDataSourceURL = s;
     }
 }
