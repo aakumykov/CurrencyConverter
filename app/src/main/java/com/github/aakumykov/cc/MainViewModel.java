@@ -13,31 +13,33 @@ import com.github.aakumykov.cc.data_models.CurrencyBoard;
 
 public class MainViewModel extends ViewModel implements LifecycleObserver {
 
-    private MutableLiveData<ePageState> pageStateLiveData;
-    private MutableLiveData<CurrencyBoard> currencyBoardLiveData;
-    private MutableLiveData<String> errorMsgLiveData;
+    private final MutableLiveData<ePageState> mPageStateLiveData;
+    private final MutableLiveData<CurrencyBoard> mCurrencyBoardLiveData;
+    private final MutableLiveData<String> mErrorMsgLiveData;
 
     private String mDataSourceURL;
     private CurrencyBoardProvider mCurrencyBoardProvider;
 
+
     public MainViewModel() {
-        this.pageStateLiveData = new MutableLiveData<>();
-        this.currencyBoardLiveData = new MutableLiveData<>();
-        this.errorMsgLiveData = new MutableLiveData<>();
+        mPageStateLiveData = new MutableLiveData<>();
+        mCurrencyBoardLiveData = new MutableLiveData<>();
+        mErrorMsgLiveData = new MutableLiveData<>();
     }
 
 
     public MutableLiveData<ePageState> getPageState() {
-        return pageStateLiveData;
+        return mPageStateLiveData;
     }
 
     public MutableLiveData<CurrencyBoard> getCurrencyBoard() {
-        return currencyBoardLiveData;
+        return mCurrencyBoardLiveData;
     }
 
     public MutableLiveData<String> getErrorMsg() {
-        return errorMsgLiveData;
+        return mErrorMsgLiveData;
     }
+
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     private void onViewCreated() {
@@ -47,13 +49,14 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private void onViewStarted() {
-        if (null == currencyBoardLiveData.getValue())
+        if (null == mCurrencyBoardLiveData.getValue())
             loadData();
     }
 
+
     private void loadData() {
 
-        pageStateLiveData.setValue(ePageState.REFRESHING);
+        mPageStateLiveData.setValue(ePageState.REFRESHING);
 
         Handler handler = new Handler(Looper.getMainLooper());
 
@@ -61,16 +64,16 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
             @Override
             public void onDataRetriveSuccess(CurrencyBoard currencyBoard) {
                 handler.post(() -> {
-                    pageStateLiveData.setValue(ePageState.READY);
-                    currencyBoardLiveData.setValue(currencyBoard);
+                    mPageStateLiveData.setValue(ePageState.READY);
+                    mCurrencyBoardLiveData.setValue(currencyBoard);
                 });
             }
 
             @Override
             public void onDataRetriveFailed(String errorMsg) {
                 handler.post(() -> {
-                    pageStateLiveData.setValue(ePageState.READY);
-                    errorMsgLiveData.setValue(errorMsg);
+                    mPageStateLiveData.setValue(ePageState.READY);
+                    mErrorMsgLiveData.setValue(errorMsg);
                 });
             }
         });
