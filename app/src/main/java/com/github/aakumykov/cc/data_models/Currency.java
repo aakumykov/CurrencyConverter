@@ -1,4 +1,4 @@
-package com.github.aakumykov.cc;
+package com.github.aakumykov.cc.data_models;
 
 import com.google.gson.annotations.SerializedName;
 
