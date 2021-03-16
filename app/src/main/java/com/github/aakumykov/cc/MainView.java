@@ -21,13 +21,40 @@ public class MainView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prepareView();
+        prepareViewModel();
+        prepareLiveData();
+    }
+
+
+    private void prepareView() {
 
         mViewBinding = ActivityMainBinding.inflate(getLayoutInflater());
+
         setContentView(mViewBinding.getRoot());
 
+        mViewBinding.swipeRefreshLayout.setColorSchemeResources(
+                R.color.purple_200,
+                R.color.purple_700,
+                R.color.teal_700,
+                R.color.teal_200
+        );
+
+        mViewBinding.swipeRefreshLayout.setOnRefreshListener(() -> {
+
+        });
+    }
+
+    private void prepareViewModel() {
         mViewModel = new ViewModelProvider.NewInstanceFactory().create(MainViewModel.class);
+
         // TODO: брать из настроек
         mViewModel.setDataSourceURL("https://www.cbr-xml-daily.ru/daily_json.js");
+
+        getLifecycle().addObserver(mViewModel);
+    }
+
+    private void prepareLiveData() {
 
         mViewModel.getPageState().observe(this, new Observer<ePageState>() {
             @Override
@@ -50,21 +77,8 @@ public class MainView extends AppCompatActivity {
                 mViewBinding.errorView.setVisibility(View.VISIBLE);
             }
         });
-
-
-        mViewBinding.swipeRefreshLayout.setColorSchemeResources(
-                R.color.purple_200,
-                R.color.purple_700,
-                R.color.teal_700,
-                R.color.teal_200
-        );
-
-        mViewBinding.swipeRefreshLayout.setOnRefreshListener(() -> {
-
-        });
-
-        getLifecycle().addObserver(mViewModel);
     }
+
 
     private void applyPageState(ePageState pageState) {
        switch (pageState) {
@@ -86,6 +100,7 @@ public class MainView extends AppCompatActivity {
     private void hideRefreshThrobber() {
         mViewBinding.swipeRefreshLayout.setRefreshing(false);
     }
+
 
     // TODO: уведомление об устаревших данных
     private void showToast(int stringResourceId) {
