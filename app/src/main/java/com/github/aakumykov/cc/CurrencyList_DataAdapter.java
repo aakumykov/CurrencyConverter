@@ -15,10 +15,11 @@ import java.util.List;
 public class CurrencyList_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Currency> mCurrencyList;
+    private iItemClickListener mItemClickListener;
 
-
-    public CurrencyList_DataAdapter() {
+    public CurrencyList_DataAdapter(iItemClickListener itemClickListener) {
         mCurrencyList = new ArrayList<>();
+        mItemClickListener = itemClickListener;
     }
 
 
@@ -33,7 +34,9 @@ public class CurrencyList_DataAdapter extends RecyclerView.Adapter<RecyclerView.
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
 //        ListItemBinding listItemBinding = ListItemBinding.inflate(LayoutInflater.from(parent.getContext()));
-        return new CurrencyViewHolder(itemView);
+        CurrencyViewHolder currencyViewHolder = new CurrencyViewHolder(itemView);
+        currencyViewHolder.setClickListener(mItemClickListener);
+        return currencyViewHolder;
     }
 
     @Override

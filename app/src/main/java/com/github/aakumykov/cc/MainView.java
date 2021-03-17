@@ -31,6 +31,7 @@ public class MainView extends AppCompatActivity {
     private MainViewModel mViewModel;
     private CurrencyList_DataAdapter mListAdapter;
     private Menu mMenu;
+    private iItemClickListener mItemClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +62,20 @@ public class MainView extends AppCompatActivity {
     private void prepareView() {
 
         mViewBinding = ActivityMainBinding.inflate(getLayoutInflater());
-
         setContentView(mViewBinding.getRoot());
 
-        mListAdapter = new CurrencyList_DataAdapter();
+        mItemClickListener = new iItemClickListener() {
+            @Override
+            public void onItemClicked(CurrencyViewHolder viewHolder) {
+                Toast.makeText(
+                        MainView.this,
+                        String.valueOf(viewHolder.getAdapterPosition()),
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        };
+
+        mListAdapter = new CurrencyList_DataAdapter(mItemClickListener);
 
         mViewBinding.recyclerView.setAdapter(mListAdapter);
         mViewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -16,21 +16,27 @@ public class CurrencyViewHolder extends RecyclerView.ViewHolder {
     private ImageView mFlagView;
     private TextView mTitleView;
     private TextView mValueView;
+    private iItemClickListener mItemClickListener;
 
     public CurrencyViewHolder(@NonNull View itemView) {
         super(itemView);
+
+        mItemView = itemView.findViewById(R.id.itemView);
         mFlagView = itemView.findViewById(R.id.flagView);
         mTitleView = itemView.findViewById(R.id.titleView);
         mValueView = itemView.findViewById(R.id.valueView);
+
+        mItemView.setOnClickListener(v -> {
+            mItemClickListener.onItemClicked(this);
+        });
     }
 
-
-    /*public CurrencyViewHolder(@NonNull ListItemBinding listItemBinding) {
-        super(listItemBinding.getRoot());
-        mListItemBinding = listItemBinding;
-    }*/
+    public void setClickListener(iItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+    }
 
     public void initialize(Currency currency) {
+
         String name = currency.getName();
         mTitleView.setText(name);
 
