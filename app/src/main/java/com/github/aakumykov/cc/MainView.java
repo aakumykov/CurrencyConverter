@@ -105,7 +105,8 @@ public class MainView extends AppCompatActivity {
         mViewModel.getProgressMessage().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer stringResourceId) {
-                showProgressMessage(stringResourceId);
+                if (mViewModel.refreshIsRunning())
+                    showProgressMessage(stringResourceId);
             }
         });
     }

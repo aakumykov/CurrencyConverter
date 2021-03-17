@@ -146,4 +146,8 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
     private void showErrorMsg(String errorMsg) {
         mErrorMessageLiveData.setValue(errorMsg);
     }
+
+    public boolean refreshIsRunning() {
+        return mRefreshIsRunning;
+    }
 }
