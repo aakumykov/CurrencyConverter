@@ -187,7 +187,15 @@ public class MainView extends AppCompatActivity {
 
     private void displayCurrencyBoard(CurrencyBoard currencyBoard) {
         hideProgressMessage();
+
         mListAdapter.setList(currencyBoard.getCurrencyList());
+
+        mViewBinding.infoView.setText(
+                new SimpleDateFormat(
+                        "Данные от dd MMMM yyyy, HH:mm",
+                        new Locale("ru","RU")
+                ).format(currencyBoard.getTimestamp())
+        );
     }
 
     private String date2string(Date date) {
