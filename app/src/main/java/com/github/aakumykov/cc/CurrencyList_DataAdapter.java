@@ -1,13 +1,13 @@
 package com.github.aakumykov.cc;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.aakumykov.cc.data_models.Currency;
-import com.github.aakumykov.cc.databinding.ListItemBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +31,9 @@ public class CurrencyList_DataAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ListItemBinding listItemBinding = ListItemBinding.inflate(LayoutInflater.from(parent.getContext()));
-        return new CurrencyViewHolder(listItemBinding);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+//        ListItemBinding listItemBinding = ListItemBinding.inflate(LayoutInflater.from(parent.getContext()));
+        return new CurrencyViewHolder(itemView);
     }
 
     @Override

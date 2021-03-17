@@ -1,25 +1,42 @@
 package com.github.aakumykov.cc;
 
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.aakumykov.cc.data_models.Currency;
-import com.github.aakumykov.cc.databinding.ListItemBinding;
 import com.squareup.picasso.Picasso;
 
 public class CurrencyViewHolder extends RecyclerView.ViewHolder {
 
-    private ListItemBinding mListItemBinding;
+    private View mItemView;
+    private ImageView mFlagView;
+    private TextView mTitleView;
+    private TextView mValueView;
 
-    public CurrencyViewHolder(@NonNull ListItemBinding listItemBinding) {
+    public CurrencyViewHolder(@NonNull View itemView) {
+        super(itemView);
+        mFlagView = itemView.findViewById(R.id.flagView);
+        mTitleView = itemView.findViewById(R.id.titleView);
+        mValueView = itemView.findViewById(R.id.valueView);
+    }
+
+
+    /*public CurrencyViewHolder(@NonNull ListItemBinding listItemBinding) {
         super(listItemBinding.getRoot());
         mListItemBinding = listItemBinding;
-    }
+    }*/
 
     public void initialize(Currency currency) {
         String name = currency.getName();
-        mListItemBinding.titleView.setText(name);
-//        mListItemBinding.valueView.setText(String.valueOf(currency.getValue()));
+        mTitleView.setText(name);
+
+        String value = String.valueOf(currency.getValue());
+        mValueView.setText(value);
+
         loadCountryFlag(currency.getCharCode());
     }
 
@@ -30,6 +47,6 @@ public class CurrencyViewHolder extends RecyclerView.ViewHolder {
         Picasso.get()
                 .load(flagImageURL)
                 .error(R.drawable.ic_country_flag_placeholder)
-                .into(mListItemBinding.flagView);
+                .into(mFlagView);
     }
 }
