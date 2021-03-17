@@ -113,7 +113,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
         });
     }
 
-    private void processLoadedData(String stringData, boolean alsoSaveToCache) {
+    private void processLoadedData(String stringData, boolean isDataFromNetwork) {
 
         CurrencyBoard currencyBoard = DataParser.parseData(stringData);
 
@@ -125,14 +125,12 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
                 mCurrencyBoardLiveData.setValue(currencyBoard);
             });
 
-            if (alsoSaveToCache)
+            if (isDataFromNetwork)
                 CachedDataManager.saveStringToCache(stringData, mAppContext, null);
         }
         else {
             // TODO: локализовать
-            handler.post(() -> {
-                showErrorMsg("Data error");
-            });
+            handler.post(this::loadDataFromNetwork);
         }
     }
 
