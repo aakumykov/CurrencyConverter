@@ -16,12 +16,13 @@ import com.github.aakumykov.cc.data_models.CurrencyBoard;
 
 public class MainViewModel extends AndroidViewModel implements LifecycleObserver {
 
-    private final MutableLiveData<ePageState> mPageStateLiveData;
     private final MutableLiveData<CurrencyBoard> mCurrencyBoardLiveData;
-    private final MutableLiveData<String> mErrorMsgLiveData;
+    private final MutableLiveData<Integer> mProgressMessageLiveData;
+    private final MutableLiveData<String> mErrorMessageLiveData;
 
     private String mDataSourceURL;
     private CurrencyBoardProvider mCurrencyBoardProvider;
+    private boolean mRefreshIsRunning = false;
     private final Context mAppContext;
 
 
@@ -30,9 +31,9 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
 
         mAppContext = application.getApplicationContext();
 
-        mPageStateLiveData = new MutableLiveData<>();
         mCurrencyBoardLiveData = new MutableLiveData<>();
-        mErrorMsgLiveData = new MutableLiveData<>();
+        mProgressMessageLiveData = new MutableLiveData<>();
+        mErrorMessageLiveData = new MutableLiveData<>();
     }
 
 
@@ -41,21 +42,24 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
     }
 
 
-    public MutableLiveData<ePageState> getPageState() {
-        return mPageStateLiveData;
-    }
-
     public MutableLiveData<CurrencyBoard> getCurrencyBoard() {
         return mCurrencyBoardLiveData;
     }
 
     public MutableLiveData<String> getErrorMsg() {
-        return mErrorMsgLiveData;
+        return mErrorMessageLiveData;
+    }
+
+    public MutableLiveData<Integer> getProgressMessage() {
+        return mProgressMessageLiveData;
     }
 
 
     public void onRefreshRequested() {
-        loadDataFromNetwork();
+        if (!mRefreshIsRunning) {
+            mRefreshIsRunning = true;
+            loadDataFromNetwork();
+        }
     }
 
 
@@ -98,7 +102,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
 
     private void loadDataFromNetwork() {
 
-        mPageStateLiveData.setValue(ePageState.REFRESHING);
+        mProgressMessageLiveData.setValue(R.string.updating_data);
 
         NetworkDataLoader.fetchData(mDataSourceURL, new NetworkDataLoader.iDataFetchCallbacks() {
             @Override
@@ -115,6 +119,8 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
 
     private void processLoadedData(String stringData, boolean isDataFromNetwork) {
 
+        mRefreshIsRunning = false;
+
         CurrencyBoard currencyBoard = DataParser.parseData(stringData);
 
         Handler handler = new Handler(Looper.getMainLooper());
@@ -130,7 +136,6 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
         }
 
         handler.post(() -> {
-            mPageStateLiveData.setValue(ePageState.READY);
             mCurrencyBoardLiveData.setValue(currencyBoard);
         });
 
@@ -139,7 +144,6 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
     }
 
     private void showErrorMsg(String errorMsg) {
-        mPageStateLiveData.setValue(ePageState.READY);
-        mErrorMsgLiveData.setValue(errorMsg);
+        mErrorMessageLiveData.setValue(errorMsg);
     }
 }

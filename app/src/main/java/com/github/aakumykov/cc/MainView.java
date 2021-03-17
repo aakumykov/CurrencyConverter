@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
@@ -87,45 +88,26 @@ public class MainView extends AppCompatActivity {
 
     private void prepareLiveData() {
 
-        mViewModel.getPageState().observe(this, new Observer<ePageState>() {
-            @Override
-            public void onChanged(ePageState pageState) {
-                applyPageState(pageState);
-            }
-        });
-
         mViewModel.getCurrencyBoard().observe(this, new Observer<CurrencyBoard>() {
             @Override
             public void onChanged(CurrencyBoard currencyBoard) {
-                updateView(currencyBoard);
+                displayCurrencyBoard(currencyBoard);
             }
         });
 
         mViewModel.getErrorMsg().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                mViewBinding.errorView.setText(s);
-                mViewBinding.errorView.setVisibility(View.VISIBLE);
+                showError(s);
             }
         });
-    }
 
-
-    private void applyPageState(ePageState pageState) {
-       switch (pageState) {
-            case REFRESHING:
-                disableRefreshMenu();
-                showRefreshThrobber();
-                break;
-
-            case READY:
-                enableRefreshMenu();
-                hideRefreshThrobber();
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unknown ePageState value: "+pageState);
-        }
+        mViewModel.getProgressMessage().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer stringResourceId) {
+                showProgressMessage(stringResourceId);
+            }
+        });
     }
 
     private void disableRefreshMenu() {
@@ -152,6 +134,24 @@ public class MainView extends AppCompatActivity {
         mViewBinding.progressBar.setVisibility(View.GONE);
     }
 
+    private void showProgressMessage(int stringResourceId) {
+        mViewBinding.progressMessageView.setText(stringResourceId);
+        showView(mViewBinding.progressMessageView);
+        showView(mViewBinding.progressBar);
+    }
+
+    private void hideProgressMessage() {
+        mViewBinding.progressMessageView.setText("");
+        hideView(mViewBinding.progressMessageView);
+        hideView(mViewBinding.progressBar);
+    }
+
+    private void showError(String s) {
+        hideProgressMessage();
+        mViewBinding.errorMessageView.setText(s);
+        showView(mViewBinding.errorMessageView);
+    }
+
 
     // TODO: уведомление об устаревших данных
     private void showToast(int stringResourceId) {
@@ -173,19 +173,23 @@ public class MainView extends AppCompatActivity {
         return dividerItemDecoration;
     }
 
-    private void updateView(CurrencyBoard currencyBoard) {
-
-        mViewBinding.infoView.setText(
-                date2string(
-                        currencyBoard.getTimestamp()
-                )
-        );
-
+    private void displayCurrencyBoard(CurrencyBoard currencyBoard) {
+        hideProgressMessage();
         mListAdapter.setList(currencyBoard.getCurrencyList());
     }
 
     private String date2string(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", new Locale("ru","RU"));
         return format.format(date);
+    }
+
+    private void showView(@Nullable View view) {
+        if (null != view)
+            view.setVisibility(View.VISIBLE);
+    }
+
+    private void hideView(@Nullable View view) {
+        if (null != view)
+            view.setVisibility(View.GONE);
     }
 }
