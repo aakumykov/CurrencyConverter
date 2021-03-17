@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,12 +33,13 @@ public class CachedDataManager {
     private final static String FILE_NAME = "currency_board.json";
 
 
-    public static void readCachedString(@NonNull Context context, iFileReadCallbacks callbacks) {
+    public static boolean cacheFileExists(@NonNull Context context) {
+        File file = new File(context.getFilesDir(), FILE_NAME);
+        boolean isExists = file.exists();
+        return isExists;
+    }
 
-        if (!cacheFileExists(context)) {
-            callbacks.onFileReadError("File '"+FILE_NAME+"' does not exists in cache dir.");
-            return;
-        }
+    public static void readCachedString(@NonNull Context context, iFileReadCallbacks callbacks) {
 
         FileInputStream fis = null;
         try {
@@ -61,28 +63,29 @@ public class CachedDataManager {
             onFileReadException(e, callbacks);
         }
         finally {
-            callbacks.onFileReadSuccess(stringBuilder.toString());
+            String jsonString = stringBuilder.toString();
+            callbacks.onFileReadSuccess(jsonString);
         }
     }
 
-    public static void saveStringToCache(String stringData, @NonNull Context context, iFileWriteCallbacks callbacks) {
+    public static void saveStringToCache(String stringData, @NonNull Context context, @Nullable iFileWriteCallbacks callbacks) {
 
         try (FileOutputStream fos = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE)) {
             fos.write(stringData.getBytes());
         }
         catch (IOException e) {
-            onFileWriteException(e, callbacks);
+            String errorMsg = ExceptionUtils.getErrorMessage(e);
+            Log.e(TAG, errorMsg, e);
+
+            if (null != callbacks)
+                callbacks.onFileWriteError(errorMsg);
         }
         finally {
-            callbacks.onFileWriteSuccess();
+            if (null != callbacks)
+                callbacks.onFileWriteSuccess();
         }
     }
 
-
-    private static boolean cacheFileExists(@NonNull Context context) {
-        File file = new File(context.getCacheDir(), FILE_NAME);
-        return file.exists();
-    }
 
     private static void onFileReadException(@NonNull Exception e, iFileReadCallbacks callbacks) {
         String errorMsg = ExceptionUtils.getErrorMessage(e);
@@ -90,9 +93,5 @@ public class CachedDataManager {
         callbacks.onFileReadError(errorMsg);
     }
 
-    private static void onFileWriteException(@NonNull Exception e, iFileWriteCallbacks callbacks) {
-        String errorMsg = ExceptionUtils.getErrorMessage(e);
-        Log.e(TAG, errorMsg, e);
-        callbacks.onFileWriteError(errorMsg);
-    }
+
 }
