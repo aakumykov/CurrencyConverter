@@ -2,9 +2,12 @@ package com.github.aakumykov.cc;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
@@ -26,6 +29,7 @@ public class MainView extends AppCompatActivity {
     private ActivityMainBinding mViewBinding;
     private MainViewModel mViewModel;
     private CurrencyList_DataAdapter mListAdapter;
+    private Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,25 +39,29 @@ public class MainView extends AppCompatActivity {
         prepareLiveData();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        mMenu = menu;
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (R.id.actionRefresh == item.getItemId()) {
+            mViewModel.onRefreshRequested();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void prepareView() {
 
         mViewBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
         setContentView(mViewBinding.getRoot());
-
-
-        mViewBinding.swipeRefreshLayout.setColorSchemeResources(
-                R.color.purple_200,
-                R.color.purple_700,
-                R.color.teal_700,
-                R.color.teal_200
-        );
-
-        mViewBinding.swipeRefreshLayout.setOnRefreshListener(() -> {
-            mViewModel.onRefreshRequested();
-        });
-
 
         mListAdapter = new CurrencyList_DataAdapter();
 
@@ -100,12 +108,12 @@ public class MainView extends AppCompatActivity {
     private void applyPageState(ePageState pageState) {
        switch (pageState) {
             case REFRESHING:
-                disableRefreshListener();
+                disableRefreshMenu();
                 showRefreshThrobber();
                 break;
 
             case READY:
-                enableRefreshListener();
+                enableRefreshMenu();
                 hideRefreshThrobber();
                 break;
 
@@ -114,20 +122,28 @@ public class MainView extends AppCompatActivity {
         }
     }
 
-    private void disableRefreshListener() {
-        mViewBinding.swipeRefreshLayout.setEnabled(false);
+    private void disableRefreshMenu() {
+        if (null != mMenu) {
+            MenuItem menuItem = mMenu.findItem(R.id.actionRefresh);
+            if (null != menuItem)
+                menuItem.setEnabled(false);
+        }
     }
 
-    private void enableRefreshListener() {
-        mViewBinding.swipeRefreshLayout.setEnabled(true);
+    private void enableRefreshMenu() {
+        if (null != mMenu) {
+            MenuItem menuItem = mMenu.findItem(R.id.actionRefresh);
+            if (null != menuItem)
+                menuItem.setEnabled(true);
+        }
     }
 
     private void showRefreshThrobber() {
-        mViewBinding.swipeRefreshLayout.setRefreshing(true);
+        mViewBinding.progressBar.setVisibility(View.VISIBLE);
     }
 
     private void hideRefreshThrobber() {
-        mViewBinding.swipeRefreshLayout.setRefreshing(false);
+        mViewBinding.progressBar.setVisibility(View.GONE);
     }
 
 
