@@ -119,49 +119,27 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
 
         Handler handler = new Handler(Looper.getMainLooper());
 
-        if (null != currencyBoard) {
-            handler.post(() -> {
-                mPageStateLiveData.setValue(ePageState.READY);
-                mCurrencyBoardLiveData.setValue(currencyBoard);
-            });
-
-            if (isDataFromNetwork)
-                CachedDataManager.saveStringToCache(stringData, mAppContext, null);
-        }
-        else {
-            // TODO: локализовать
+        if (null == currencyBoard) {
             handler.post(this::loadDataFromNetwork);
+            return;
         }
+
+        if (currencyBoard.isExpired()) {
+            handler.post(this::loadDataFromNetwork);
+            return;
+        }
+
+        handler.post(() -> {
+            mPageStateLiveData.setValue(ePageState.READY);
+            mCurrencyBoardLiveData.setValue(currencyBoard);
+        });
+
+        if (isDataFromNetwork)
+            CachedDataManager.saveStringToCache(stringData, mAppContext, null);
     }
 
     private void showErrorMsg(String errorMsg) {
         mPageStateLiveData.setValue(ePageState.READY);
         mErrorMsgLiveData.setValue(errorMsg);
     }
-
-
-    /*private void loadData(boolean force) {
-
-        mPageStateLiveData.setValue(ePageState.REFRESHING);
-
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        mCurrencyBoardProvider.getData(force, new CurrencyBoardProvider.iDataRetriveCallbacks() {
-            @Override
-            public void onDataRetriveSuccess(CurrencyBoard currencyBoard) {
-                handler.post(() -> {
-                    mPageStateLiveData.setValue(ePageState.READY);
-                    mCurrencyBoardLiveData.setValue(currencyBoard);
-                });
-            }
-
-            @Override
-            public void onDataRetriveFailed(String errorMsg) {
-                handler.post(() -> {
-                    mPageStateLiveData.setValue(ePageState.READY);
-                    mErrorMsgLiveData.setValue(errorMsg);
-                });
-            }
-        });
-    }*/
 }
