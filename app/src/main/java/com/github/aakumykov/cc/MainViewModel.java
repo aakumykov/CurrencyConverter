@@ -28,6 +28,10 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
         mErrorMsgLiveData = new MutableLiveData<>();
     }
 
+    public void setDataSourceURL(String s) {
+        mDataSourceURL = s;
+    }
+
 
     public MutableLiveData<ePageState> getPageState() {
         return mPageStateLiveData;
@@ -41,10 +45,6 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
         return mErrorMsgLiveData;
     }
 
-
-    public void setDataSourceURL(String s) {
-        mDataSourceURL = s;
-    }
 
     public void onRefreshRequested() {
         if (!isLoading)
@@ -61,12 +61,9 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private void onViewStarted() {
         if (null == mCurrencyBoardLiveData.getValue())
-            loadData();
+            loadData(false);
     }
 
-    private void loadData() {
-        loadData(false);
-    }
 
     private void loadData(boolean forceLoad) {
 

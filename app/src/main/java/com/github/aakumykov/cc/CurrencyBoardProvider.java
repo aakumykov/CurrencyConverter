@@ -24,10 +24,11 @@ public class CurrencyBoardProvider {
         mDataSourceURL = dataSourceURL;
     }
 
+
     public void getData(boolean forceLoad, iDataRetriveCallbacks callbacks) {
 
         if (forceLoad) {
-            loadData(callbacks);
+            getDataFromNetwork(callbacks);
             return;
         }
 
@@ -46,6 +47,7 @@ public class CurrencyBoardProvider {
         long timeDiff = systemDate.getTime() - dataDate.getTime();
         return timeDiff < TimeUnit.HOURS.toHours(1);
     }
+
 
     private void loadData(iDataRetriveCallbacks callbacks) {
         
@@ -95,6 +97,5 @@ public class CurrencyBoardProvider {
             }
         });
     }
-
 
 }
