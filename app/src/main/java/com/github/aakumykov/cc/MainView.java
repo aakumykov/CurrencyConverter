@@ -73,7 +73,11 @@ public class MainView extends AppCompatActivity {
     private void prepareViewModel() {
 //        mViewModel = new ViewModelProvider.NewInstanceFactory().create(MainViewModel.class);
 //        mViewModel = new ViewModelProvider(this, new MainViewModelFactory()).get(MainViewModel.class);
-        mViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainViewModel.class);
+//        mViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication())
+//        .create(MainViewModel.class);
+
+        mViewModel = new ViewModelProvider(this, new MainViewModelFactory(getApplication()))
+                .get(MainViewModel.class);
 
         // TODO: брать из настроек
         mViewModel.setDataSourceURL("https://www.cbr-xml-daily.ru/daily_json.js");
