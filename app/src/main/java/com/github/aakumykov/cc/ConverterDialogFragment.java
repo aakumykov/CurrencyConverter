@@ -3,6 +3,7 @@ package com.github.aakumykov.cc;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class ConverterDialogFragment extends DialogFragment {
 
+    private static final String TAG = ConverterDialogFragment.class.getSimpleName();
     private List<Currency> mCurrencyList;
     private Spinner mSpinner1;
     private Spinner mSpinner2;
@@ -52,24 +54,24 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                Log.d(TAG, String.valueOf(position));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                Log.d(TAG, "onNothingSelected()");
             }
         });
 
         mSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                Log.d(TAG, String.valueOf(position));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                Log.d(TAG, "onNothingSelected()");
             }
         });
 

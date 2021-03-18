@@ -32,12 +32,23 @@ public class CustomArrayAdapter extends ArrayAdapter<Currency> {
 
     @NonNull @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return createNormalFoldedView(position, convertView, parent);
+        View view = (null != convertView) ?
+                convertView :
+                mLayoutInflater.inflate(R.layout.spinner_folded_item, parent, false);
+
+        fillView(view, mCurrencyList.get(position));
+
+        return view;
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return createNormalUnfoldedView(position, convertView, parent);
+        View view = (null != convertView) ? convertView
+                : mLayoutInflater.inflate(R.layout.spinner_unfolded_item, parent, false);
+
+        fillView(view, mCurrencyList.get(position));
+
+        return view;
     }
 
     @Nullable @Override
@@ -68,18 +79,4 @@ public class CustomArrayAdapter extends ArrayAdapter<Currency> {
                 .into(flagView);
     }
 
-    private View createNormalFoldedView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = (null != convertView) ?
-                convertView :
-                mLayoutInflater.inflate(R.layout.spinner_folded_item, parent, false);
-        fillView(view, mCurrencyList.get(position));
-        return view;
-    }
-
-    private View createNormalUnfoldedView(int position, View convertView, ViewGroup parent) {
-        View view = (null != convertView) ? convertView
-                : mLayoutInflater.inflate(R.layout.spinner_unfolded_item, parent, false);
-        fillView(view, mCurrencyList.get(position));
-        return view;
-    }
 }
