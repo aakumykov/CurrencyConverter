@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,8 @@ public class ConverterDialogFragment extends DialogFragment {
     private List<Currency> mCurrencyList;
     private Spinner mSpinner1;
     private Spinner mSpinner2;
-    private CustomArrayAdapter mSpinnerAdapter;
+    private CustomArrayAdapter mSpinnerAdapter1;
+    private CustomArrayAdapter mSpinnerAdapter2;
 
 
     public ConverterDialogFragment(CurrencyBoard currencyBoard) {
@@ -34,13 +36,40 @@ public class ConverterDialogFragment extends DialogFragment {
         LayoutInflater factory = LayoutInflater.from(getActivity());
         final View view = factory.inflate(R.layout.converter_dialog, null);
 
+        mSpinnerAdapter1 = new CustomArrayAdapter(view.getContext(), -1, mCurrencyList);
+        mSpinnerAdapter2 = new CustomArrayAdapter(view.getContext(), -1, mCurrencyList);
+
         mSpinner1 = view.findViewById(R.id.firstCurrencySelector);
         mSpinner2 = view.findViewById(R.id.secondCurrencySelector);
 
-        mSpinnerAdapter = new CustomArrayAdapter(view.getContext(), -1, mCurrencyList);
+        mSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (0 == position)
+                    mSpinnerAdapter1.setManualSelectionMode();
+            }
 
-        mSpinner1.setAdapter(mSpinnerAdapter);
-        mSpinner2.setAdapter(mSpinnerAdapter);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (0 == position)
+                    mSpinnerAdapter2.setManualSelectionMode();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mSpinner1.setAdapter(mSpinnerAdapter1);
+        mSpinner2.setAdapter(mSpinnerAdapter2);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);

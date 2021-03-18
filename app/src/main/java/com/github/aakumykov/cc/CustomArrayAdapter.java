@@ -22,6 +22,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Currency> {
 
     private List<Currency> mCurrencyList = new ArrayList<>();
     private LayoutInflater mLayoutInflater;
+    private boolean mIsManualSelectionMode = false;
 
 
     public CustomArrayAdapter(@NonNull Context context, int folderSpinnerItemResourceId, @NonNull List<Currency> currencyList) {
@@ -43,23 +44,33 @@ public class CustomArrayAdapter extends ArrayAdapter<Currency> {
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Currency country = getItem(position);
-        if (null == country)
+        Currency currency = getItem(position);
+
+        if (null == currency) {
             return createBlankUnfoldedView(position, convertView, parent);
+        }
         else
-            return createNormalUnfoldedView(position, country, convertView, parent);
+            return createNormalUnfoldedView(position, currency, convertView, parent);
     }
 
     @Nullable @Override
     public Currency getItem(int position) {
-        if (0 == position)
-            return null;
-        return super.getItem(position - 1);
+        if (mIsManualSelectionMode)
+            return super.getItem(position);
+        else {
+            if (0 == position)
+                return null;
+            else
+                return super.getItem(position - 1);
+        }
     }
 
     @Override
     public int getCount() {
-        return mCurrencyList.size() + 1;
+        if (mIsManualSelectionMode)
+            return mCurrencyList.size();
+        else
+            return mCurrencyList.size() + 1;
     }
 
     @Override
@@ -113,5 +124,9 @@ public class CustomArrayAdapter extends ArrayAdapter<Currency> {
                 : mLayoutInflater.inflate(R.layout.spinner_unfolded_item, parent, false);
         fillView(view, country);
         return view;
+    }
+
+    public void setManualSelectionMode() {
+        mIsManualSelectionMode = true;
     }
 }
