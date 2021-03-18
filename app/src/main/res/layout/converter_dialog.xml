@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/transparent_background"
         android:popupBackground="@drawable/transparent_background"
-        android:spinnerMode="dropdown"
+        android:spinnerMode="dialog"
         tools:listitem="@layout/spinner_folded_item" />
 
     <EditText
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/transparent_background"
         android:popupBackground="@drawable/transparent_background"
-        android:spinnerMode="dropdown"
+        android:spinnerMode="dialog"
         tools:listitem="@layout/spinner_folded_item" />
 
 </LinearLayout>

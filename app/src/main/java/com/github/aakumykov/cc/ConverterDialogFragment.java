@@ -40,7 +40,7 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinnerAdapter = new CustomArrayAdapter(view.getContext(), -1, mCurrencyList);
 
         mSpinner1.setAdapter(mSpinnerAdapter);
-//        mSpinner2.setAdapter(mSpinnerAdapter);
+        mSpinner2.setAdapter(mSpinnerAdapter);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
