@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_round_radius">6dp</dimen>
+    <dimen name="country_item_height">16dp</dimen>
+    <dimen name="general_margin">8dp</dimen>
+    <dimen name="country_item_padding">8dp</dimen>
+    <dimen name="spinner_item_corner_radius">8dp</dimen>
+    <dimen name="spinner_tiem_outline_width">1dp</dimen>
+</resources>

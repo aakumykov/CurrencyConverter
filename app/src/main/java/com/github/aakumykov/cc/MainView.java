@@ -27,11 +27,14 @@ import java.util.Locale;
 public class MainView extends AppCompatActivity {
 
     private final String TAG = MainView.class.getSimpleName();
+
     private ActivityMainBinding mViewBinding;
     private MainViewModel mViewModel;
-    private CurrencyList_DataAdapter mListAdapter;
     private Menu mMenu;
+
+    private CurrencyList_DataAdapter mListAdapter;
     private iItemClickListener mItemClickListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,8 +173,8 @@ public class MainView extends AppCompatActivity {
 
 
     private void onConverterLauncherClicked() {
-        ConverterDialog converterDialog = new ConverterDialog();
-        converterDialog.show(getSupportFragmentManager(), "converter_dialog");
+        ConverterDialogFragment converterDialogFragment = new ConverterDialogFragment(mViewModel.getCurrencyBoard().getValue());
+        converterDialogFragment.show(getSupportFragmentManager(), "converter_dialog");
     }
 
 

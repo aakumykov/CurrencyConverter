@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke android:color="@color/purple_200" android:width="@dimen/spinner_tiem_outline_width" />
+    <corners android:radius="@dimen/spinner_item_corner_radius" />
+    <solid android:color="@color/white" />
+</shape>
