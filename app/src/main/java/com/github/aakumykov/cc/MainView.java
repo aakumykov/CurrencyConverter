@@ -80,6 +80,10 @@ public class MainView extends AppCompatActivity {
         mViewBinding.recyclerView.setAdapter(mListAdapter);
         mViewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mViewBinding.recyclerView.addItemDecoration(prepareItemDecoration());
+
+        mViewBinding.converterLauncherView.setOnClickListener(v -> {
+            onConverterLauncherClicked();
+        });
     }
 
     private void prepareViewModel() {
@@ -165,9 +169,18 @@ public class MainView extends AppCompatActivity {
     }
 
 
+    private void onConverterLauncherClicked() {
+        showToast("Конвертер валют");
+    }
+
+
     // TODO: уведомление об устаревших данных
     private void showToast(int stringResourceId) {
         Toast.makeText(this, stringResourceId, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showToast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     private RecyclerView.ItemDecoration prepareItemDecoration() {

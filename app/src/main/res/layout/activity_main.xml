@@ -74,4 +74,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoView" />
 
+    <ImageView
+        android:id="@+id/converterLauncherView"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/shape_converter_launcher_bg"
+        android:elevation="4dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_exchange" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
