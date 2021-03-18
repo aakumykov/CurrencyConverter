@@ -33,7 +33,6 @@ public class CustomArrayAdapter extends ArrayAdapter<Currency> {
 
     @NonNull @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         if (0 == position)
             return createBlankFoldedView(position, convertView, parent);
         else {

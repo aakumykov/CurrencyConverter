@@ -173,8 +173,11 @@ public class MainView extends AppCompatActivity {
 
 
     private void onConverterLauncherClicked() {
-        ConverterDialogFragment converterDialogFragment = new ConverterDialogFragment(mViewModel.getCurrencyBoard().getValue());
-        converterDialogFragment.show(getSupportFragmentManager(), "converter_dialog");
+        CurrencyBoard currencyBoard = mViewModel.getCurrencyBoard().getValue();
+        if (null != currencyBoard) {
+            ConverterDialogFragment converterDialogFragment = new ConverterDialogFragment(currencyBoard);
+            converterDialogFragment.show(getSupportFragmentManager(), "converter_dialog");
+        }
     }
 
 

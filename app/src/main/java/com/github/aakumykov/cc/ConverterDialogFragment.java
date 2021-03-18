@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -19,10 +18,10 @@ import java.util.List;
 
 public class ConverterDialogFragment extends DialogFragment {
 
+    private List<Currency> mCurrencyList;
     private Spinner mSpinner1;
     private Spinner mSpinner2;
     private CustomArrayAdapter mSpinnerAdapter;
-    private List<Currency> mCurrencyList;
 
 
     public ConverterDialogFragment(CurrencyBoard currencyBoard) {
@@ -31,16 +30,9 @@ public class ConverterDialogFragment extends DialogFragment {
 
     @NonNull @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(R.layout.converter_dialog);
-        return builder.create();
-    }
 
-    @Nullable @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
-        View view = inflater.inflate(R.layout.converter_dialog, container, false);
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View view = factory.inflate(R.layout.converter_dialog, null);
 
         mSpinner1 = view.findViewById(R.id.firstCurrencySelector);
         mSpinner2 = view.findViewById(R.id.secondCurrencySelector);
@@ -48,9 +40,11 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinnerAdapter = new CustomArrayAdapter(view.getContext(), -1, mCurrencyList);
 
         mSpinner1.setAdapter(mSpinnerAdapter);
-        mSpinner2.setAdapter(mSpinnerAdapter);
+//        mSpinner2.setAdapter(mSpinnerAdapter);
 
-        return view;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(view);
+        return builder.create();
     }
 
 }
