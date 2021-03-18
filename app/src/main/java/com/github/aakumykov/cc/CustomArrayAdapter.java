@@ -1,7 +1,6 @@
 package com.github.aakumykov.cc;
 
 import android.content.Context;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ public class CustomArrayAdapter extends ArrayAdapter<Currency> {
 
     private List<Currency> mCurrencyList = new ArrayList<>();
     private LayoutInflater mLayoutInflater;
-    private boolean mIsManualSelectionMode = false;
 
 
     public CustomArrayAdapter(@NonNull Context context, int folderSpinnerItemResourceId, @NonNull List<Currency> currencyList) {
@@ -34,43 +32,22 @@ public class CustomArrayAdapter extends ArrayAdapter<Currency> {
 
     @NonNull @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if (0 == position)
-            return createBlankFoldedView(position, convertView, parent);
-        else {
-            position = position - 1;
-            return createNormalFoldedView(position, convertView, parent);
-        }
+        return createNormalFoldedView(position, convertView, parent);
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Currency currency = getItem(position);
-
-        if (null == currency) {
-            return createBlankUnfoldedView(position, convertView, parent);
-        }
-        else
-            return createNormalUnfoldedView(position, currency, convertView, parent);
+        return createNormalUnfoldedView(position, convertView, parent);
     }
 
     @Nullable @Override
     public Currency getItem(int position) {
-        if (mIsManualSelectionMode)
-            return super.getItem(position);
-        else {
-            if (0 == position)
-                return null;
-            else
-                return super.getItem(position - 1);
-        }
+        return super.getItem(position);
     }
 
     @Override
     public int getCount() {
-        if (mIsManualSelectionMode)
-            return mCurrencyList.size();
-        else
-            return mCurrencyList.size() + 1;
+        return mCurrencyList.size();
     }
 
     @Override
@@ -91,26 +68,6 @@ public class CustomArrayAdapter extends ArrayAdapter<Currency> {
                 .into(flagView);
     }
 
-    private View createBlankFoldedView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = mLayoutInflater.inflate(R.layout.spinner_blank_folded_item, parent, false);
-        return view;
-    }
-
-    private View createBlankUnfoldedView(int position, View convertView, ViewGroup parent) {
-        if (null != convertView) {
-            return convertView;
-        }
-        else {
-            View view = mLayoutInflater.inflate(R.layout.spinner_blank_unfolded_item, parent, false);
-            view.setOnClickListener(v -> {
-                View rootView = parent.getRootView();
-                rootView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-                rootView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
-            });
-            return view;
-        }
-    }
-
     private View createNormalFoldedView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = (null != convertView) ?
                 convertView :
@@ -119,14 +76,10 @@ public class CustomArrayAdapter extends ArrayAdapter<Currency> {
         return view;
     }
 
-    private View createNormalUnfoldedView(int position, Currency country, View convertView, ViewGroup parent) {
+    private View createNormalUnfoldedView(int position, View convertView, ViewGroup parent) {
         View view = (null != convertView) ? convertView
                 : mLayoutInflater.inflate(R.layout.spinner_unfolded_item, parent, false);
-        fillView(view, country);
+        fillView(view, mCurrencyList.get(position));
         return view;
-    }
-
-    public void setManualSelectionMode() {
-        mIsManualSelectionMode = true;
     }
 }

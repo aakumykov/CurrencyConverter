@@ -16,6 +16,14 @@ public class Currency {
 
     public Currency() {}
 
+    public Currency(String name, int nominal, String charCode, float value) {
+        this.name = name;
+        this.nominal = nominal;
+        this.charCode = charCode;
+        this.value = value;
+    }
+
+
     public String getId() {
         return id;
     }

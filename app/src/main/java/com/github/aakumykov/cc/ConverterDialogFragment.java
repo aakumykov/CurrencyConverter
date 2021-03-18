@@ -28,6 +28,13 @@ public class ConverterDialogFragment extends DialogFragment {
 
     public ConverterDialogFragment(CurrencyBoard currencyBoard) {
         mCurrencyList = currencyBoard.getCurrencyList();
+
+        mCurrencyList.add(0, new Currency(
+                "Российский рубль",
+                1,
+                "RUR",
+                1
+        ));
     }
 
     @NonNull @Override
@@ -45,8 +52,7 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (0 == position)
-                    mSpinnerAdapter1.setManualSelectionMode();
+
             }
 
             @Override
@@ -58,8 +64,7 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (0 == position)
-                    mSpinnerAdapter2.setManualSelectionMode();
+
             }
 
             @Override
@@ -71,9 +76,30 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinner1.setAdapter(mSpinnerAdapter1);
         mSpinner2.setAdapter(mSpinnerAdapter2);
 
+        mSpinner1.setSelection(findRublePosition(mCurrencyList));
+        mSpinner2.setSelection(findDollarPosition(mCurrencyList));
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
         return builder.create();
+    }
+
+    private int findRublePosition(List<Currency> currencyList) {
+        for (int i=0; i<mCurrencyList.size(); i++) {
+            Currency currency = mCurrencyList.get(i);
+            if ("RUB".equals(currency.getCharCode()))
+                return i;
+        }
+        return 0;
+    }
+
+    private int findDollarPosition(List<Currency> currencyList) {
+        for (int i=0; i<mCurrencyList.size(); i++) {
+            Currency currency = mCurrencyList.get(i);
+            if ("USD".equals(currency.getCharCode()))
+                return i;
+        }
+        return 0;
     }
 
 }
