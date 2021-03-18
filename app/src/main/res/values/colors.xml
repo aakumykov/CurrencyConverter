@@ -13,4 +13,7 @@
     <color name="infoViewBgColor">@color/purple_200</color>
     <color name="infoViewFgColor">#FFFFFF</color>
 
+    <color name="converterLauncherBackground">#F4EEFB</color>
+    <color name="converterLauncherBorder">@color/purple_200</color>
+
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <corners android:radius="16dp" />
-    <stroke android:color="#AED581" android:width="1dp" />
-    <solid android:color="#FFFFFF" />
+    <stroke android:color="@color/converterLauncherBorder" android:width="2dp" />
+    <solid android:color="@color/converterLauncherBackground" />
 </shape>
