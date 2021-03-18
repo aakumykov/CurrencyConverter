@@ -170,7 +170,8 @@ public class MainView extends AppCompatActivity {
 
 
     private void onConverterLauncherClicked() {
-        showToast("Конвертер валют");
+        ConverterDialog converterDialog = new ConverterDialog();
+        converterDialog.show(getSupportFragmentManager(), "converter_dialog");
     }
 
 
