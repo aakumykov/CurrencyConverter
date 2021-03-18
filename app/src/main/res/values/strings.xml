@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Currency rate + converter</string>
     <string name="updating_data">Updating data</string>
+    <string name="select_currency">Currency</string>
+    <string name="currency_amount_hint">value</string>
 </resources>

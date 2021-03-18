@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingVertical="8dp"
     android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/firstCurrencyAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/currency_amount_hint"
+        android:inputType="number"
+        android:textAlignment="center" />
 
     <Spinner
         android:id="@+id/firstCurrencySelector"
@@ -15,20 +26,11 @@
         android:spinnerMode="dialog"
         tools:listitem="@layout/spinner_folded_item" />
 
-    <EditText
-        android:id="@+id/firstCurrencyAmount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="сумма первой валюты"
-        android:inputType="number"
-        android:textAlignment="center" />
-
     <ImageView
         android:id="@+id/imageView"
+        android:paddingVertical="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         app:srcCompat="@drawable/ic_exchange" />
 
     <EditText
@@ -37,8 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="сумма второй валюты"
         android:inputType="number"
+        android:text="0.0000"
         android:textAlignment="center" />
 
     <Spinner
