@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Конвертер валют</string>
+    <string name="app_name">Курс + конвертер валют</string>
     <string name="updating_data">Обновляем данные</string>
 </resources>

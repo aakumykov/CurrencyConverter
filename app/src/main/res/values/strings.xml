@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">CurrencyConverter</string>
-    <string name="updating_data">Обновляем данные</string>
+    <string name="app_name">Currency rate + converter</string>
+    <string name="updating_data">Updating data</string>
 </resources>
