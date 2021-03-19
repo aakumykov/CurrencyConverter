@@ -86,7 +86,7 @@ public class ConverterDialogFragment extends DialogFragment {
                     mEnteredNumber = -1F;
                 }
 
-                performConvertion();
+                onConverterValuesChanged();
             }
 
             @Override
@@ -112,7 +112,7 @@ public class ConverterDialogFragment extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mSelectedCurrency1 = mCurrencyList.get(position);
-                performConvertion();
+                onConverterValuesChanged();
             }
 
             @Override
@@ -125,7 +125,7 @@ public class ConverterDialogFragment extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mSelectedCurrency2 = mCurrencyList.get(position);
-                performConvertion();
+                onConverterValuesChanged();
             }
 
             @Override
@@ -154,7 +154,7 @@ public class ConverterDialogFragment extends DialogFragment {
     }
 
 
-    public void performConvertion() {
+    public void onConverterValuesChanged() {
         String displayedResult;
 
         if (null == mSelectedCurrency1 || null == mSelectedCurrency2)
@@ -164,15 +164,7 @@ public class ConverterDialogFragment extends DialogFragment {
             displayedResult = "";
         }
         else if (mEnteredNumber > 0) {
-
-            float value1 = mSelectedCurrency1.getValue() / mSelectedCurrency1.getNominal();
-            float value2 = mSelectedCurrency2.getValue() / mSelectedCurrency1.getNominal();
-            float result = (mEnteredNumber * value1) / value2;
-
-//            int resultInt = Math.round(result * 10000);
-//            float result = resultInt / 10000F;
-
-            displayedResult = String.valueOf(result);
+            displayedResult = makeConvertion();
         }
         else if (0 == mEnteredNumber) {
             displayedResult = "0";
@@ -187,6 +179,20 @@ public class ConverterDialogFragment extends DialogFragment {
         mConversionResultView.setText(displayedResult);
     }
 
+    private String makeConvertion() {
+
+        float value1 = mSelectedCurrency1.getValue() / mSelectedCurrency1.getNominal();
+
+        float value2 = mSelectedCurrency2.getValue() / mSelectedCurrency2.getNominal();
+
+        float result = (mEnteredNumber * value1) / value2;
+
+//            int resultInt = Math.round(result * 10000);
+//            float result = resultInt / 10000F;
+
+        return String.valueOf(result);
+    }
+
 
     private void swapCurrencyValues() {
         int oldPosition1 = mSpinner1.getSelectedItemPosition();
@@ -195,6 +201,6 @@ public class ConverterDialogFragment extends DialogFragment {
 
         mNumberInput.setText(mConversionResultView.getText());
 
-        performConvertion();
+        onConverterValuesChanged();
     }
 }

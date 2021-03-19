@@ -212,7 +212,7 @@ public class MainView extends AppCompatActivity {
     private void updateCurrencyInDialog(CurrencyBoard currencyBoard) {
         mDialogFragmentFactory.updateCurrencyList(currencyBoard.getCurrencyList());
         if (null != mDialogFragment)
-            mDialogFragment.performConvertion();
+            mDialogFragment.onConverterValuesChanged();
     }
 
     // TODO: уведомление об устаревших данных
