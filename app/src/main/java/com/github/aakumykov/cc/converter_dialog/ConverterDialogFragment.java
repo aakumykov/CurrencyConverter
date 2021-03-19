@@ -57,7 +57,6 @@ public class ConverterDialogFragment extends DialogFragment {
             mCurrencyList.addAll(savedInstanceState.getParcelableArrayList(CURRENCY_LIST));
         }
 
-        // TODO: попробовать platform-версию AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = requireActivity().getLayoutInflater().inflate(R.layout.dialog_layout, null);
 

@@ -43,7 +43,7 @@ public class CurrencyArrayAdapter extends ArrayAdapter<Currency> {
     @NonNull @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = (null != convertView) ? convertView :
-                mLayoutInflater.inflate(R.layout.unfolded_item, parent, false);
+                mLayoutInflater.inflate(R.layout.spinner_item, parent, false);
         fillView(view, position);
         return view;
     }
@@ -51,7 +51,7 @@ public class CurrencyArrayAdapter extends ArrayAdapter<Currency> {
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = (null != convertView) ? convertView :
-                mLayoutInflater.inflate(R.layout.unfolded_item, parent, false);
+                mLayoutInflater.inflate(R.layout.spinner_item, parent, false);
         fillView(view, position);
         return view;
     }
