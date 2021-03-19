@@ -78,18 +78,7 @@ public class MainView extends AppCompatActivity {
         mViewBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mViewBinding.getRoot());
 
-        mItemClickListener = new iItemClickListener() {
-            @Override
-            public void onItemClicked(CurrencyViewHolder viewHolder) {
-                Toast.makeText(
-                        MainView.this,
-                        String.valueOf(viewHolder.getAdapterPosition()),
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
-        };
-
-        mListAdapter = new CurrencyList_DataAdapter(mItemClickListener);
+        mListAdapter = new CurrencyList_DataAdapter();
 
         mViewBinding.recyclerView.setAdapter(mListAdapter);
         mViewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));

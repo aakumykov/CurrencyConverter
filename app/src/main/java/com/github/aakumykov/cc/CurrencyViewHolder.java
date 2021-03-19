@@ -12,28 +12,19 @@ import com.squareup.picasso.Picasso;
 
 public class CurrencyViewHolder extends RecyclerView.ViewHolder {
 
-    private View mItemView;
-    private ImageView mFlagView;
-    private TextView mTitleView;
-    private TextView mValueView;
-    private iItemClickListener mItemClickListener;
+    private final ImageView mFlagView;
+    private final TextView mTitleView;
+    private final TextView mValueView;
+
 
     public CurrencyViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        mItemView = itemView.findViewById(R.id.itemView);
         mFlagView = itemView.findViewById(R.id.flagView);
         mTitleView = itemView.findViewById(R.id.titleView);
         mValueView = itemView.findViewById(R.id.valueView);
-
-        mItemView.setOnClickListener(v -> {
-            mItemClickListener.onItemClicked(this);
-        });
     }
 
-    public void setClickListener(iItemClickListener itemClickListener) {
-        mItemClickListener = itemClickListener;
-    }
 
     public void initialize(Currency currency) {
 
