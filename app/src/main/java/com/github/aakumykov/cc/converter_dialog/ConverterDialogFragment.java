@@ -165,8 +165,9 @@ public class ConverterDialogFragment extends DialogFragment {
             displayedResult = "";
         }
         else if (mEnteredNumber > 0) {
-            float value1 = mSelectedCurrency1.getValue();
-            float value2 = mSelectedCurrency2.getValue();
+
+            float value1 = mSelectedCurrency1.getValue() / mSelectedCurrency1.getNominal();
+            float value2 = mSelectedCurrency2.getValue() / mSelectedCurrency1.getNominal();
             float result = (mEnteredNumber * value1) / value2;
 
 //            int resultInt = Math.round(result * 10000);
