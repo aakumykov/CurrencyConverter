@@ -13,7 +13,7 @@
 
         <Spinner
             android:id="@+id/spinner1"
-            android:padding="18dp"
+            android:padding="@dimen/converter_spinner_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -27,7 +27,7 @@
             android:inputType="numberDecimal"
             android:singleLine="true"
             android:textAlignment="center"
-            android:textSize="@dimen/convert_dialog_values_text_size" />
+            android:textSize="@dimen/convert_dialog_text_size" />
 
         <ImageView
             android:id="@+id/swapValuesWidget"
@@ -43,13 +43,13 @@
             android:text="0.00"
             android:layout_margin="12dp"
             android:textAlignment="center"
-            android:textSize="@dimen/convert_dialog_values_text_size" />
+            android:textSize="@dimen/convert_dialog_text_size" />
 
         <Spinner
             android:id="@+id/spinner2"
+            android:padding="@dimen/converter_spinner_padding"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="18dp" />
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

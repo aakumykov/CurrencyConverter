@@ -22,7 +22,7 @@
         android:layout_marginStart="4dp"
         android:fontFamily="serif"
         android:padding="8dp"
-        android:textSize="18sp"
+        android:textSize="@dimen/convert_dialog_text_size"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
