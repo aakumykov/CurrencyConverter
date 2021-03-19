@@ -40,8 +40,9 @@ public class CurrencyViewHolder extends RecyclerView.ViewHolder {
         String name = currency.getName();
         mTitleView.setText(name);
 
-        String value = String.valueOf(currency.getValue());
-        mValueView.setText(value);
+        float value = currency.getValue();
+        int nominal = currency.getNominal();
+        mValueView.setText( String.valueOf(value / nominal) );
 
         loadCountryFlag(currency.getCharCode());
     }

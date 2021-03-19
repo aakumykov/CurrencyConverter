@@ -28,17 +28,14 @@ public class ConverterDialogFragment extends DialogFragment {
 
     private static final String TAG = ConverterDialogFragment.class.getSimpleName();
     private static final String ENTERED_NUMBER = "ENTERED_NUMBER";
+    private static final String CURRENCY_LIST = "CURRENCY_LIST";
 
-    private List<Currency> mStringList = new ArrayList<>();
-
-    private ArrayAdapter mArrayAdapter1;
-    private ArrayAdapter mArrayAdapter2;
+    private final ArrayList<Currency> mCurrencyList;
 
     private Spinner mSpinner1;
     private Spinner mSpinner2;
 
     private EditText mNumberInput;
-    private View mSwapValuesWidget;
     private TextView mConversionResultView;
 
     private Float mEnteredNumber;
@@ -46,9 +43,8 @@ public class ConverterDialogFragment extends DialogFragment {
     private Currency mSelectedCurrency2;
 
 
-    public ConverterDialogFragment(List<Currency> stringList) {
-        mStringList.clear();
-        mStringList.addAll(stringList);
+    public ConverterDialogFragment(List<Currency> currencyList) {
+        mCurrencyList = new ArrayList<>(currencyList);
     }
 
 
@@ -58,6 +54,7 @@ public class ConverterDialogFragment extends DialogFragment {
 
         if (null != savedInstanceState) {
             mEnteredNumber = savedInstanceState.getFloat(ENTERED_NUMBER);
+            mCurrencyList.addAll(savedInstanceState.getParcelableArrayList(CURRENCY_LIST));
         }
 
         // TODO: попробовать platform-версию AlertDialog
@@ -65,7 +62,7 @@ public class ConverterDialogFragment extends DialogFragment {
         View view = requireActivity().getLayoutInflater().inflate(R.layout.dialog_layout, null);
 
         mNumberInput = view.findViewById(R.id.numberInput);
-        mSwapValuesWidget = view.findViewById(R.id.swapValuesWidget);
+        View swapValuesWidget = view.findViewById(R.id.swapValuesWidget);
         mConversionResultView = view.findViewById(R.id.conversionResultView);
 
         mNumberInput.addTextChangedListener(new TextWatcher() {
@@ -99,15 +96,15 @@ public class ConverterDialogFragment extends DialogFragment {
             }
         });
 
-        mSwapValuesWidget.setOnClickListener(v -> {
+        swapValuesWidget.setOnClickListener(v -> {
             swapCurrencyValues();
         });
 
-        mArrayAdapter1 = new CurrencyArrayAdapter(getContext(), -1, mStringList);
-        mArrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter arrayAdapter1 = new CurrencyArrayAdapter(getContext(), -1, mCurrencyList);
+        arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        mArrayAdapter2 = new CurrencyArrayAdapter(getContext(), -1, mStringList);
-        mArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter arrayAdapter2 = new CurrencyArrayAdapter(getContext(), -1, mCurrencyList);
+        arrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mSpinner1 = view.findViewById(R.id.spinner1);
         mSpinner2 = view.findViewById(R.id.spinner2);
@@ -115,7 +112,7 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSelectedCurrency1 = mStringList.get(position);
+                mSelectedCurrency1 = mCurrencyList.get(position);
                 performConvertion();
             }
 
@@ -128,7 +125,7 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSelectedCurrency2 = mStringList.get(position);
+                mSelectedCurrency2 = mCurrencyList.get(position);
                 performConvertion();
             }
 
@@ -138,8 +135,8 @@ public class ConverterDialogFragment extends DialogFragment {
             }
         });
 
-        mSpinner1.setAdapter(mArrayAdapter1);
-        mSpinner2.setAdapter(mArrayAdapter1);
+        mSpinner1.setAdapter(arrayAdapter1);
+        mSpinner2.setAdapter(arrayAdapter1);
 
 //        mSpinner2.setSelection(2);
 
@@ -150,8 +147,11 @@ public class ConverterDialogFragment extends DialogFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+
         if (null != mEnteredNumber)
             outState.putFloat(ENTERED_NUMBER, mEnteredNumber);
+
+        outState.putParcelableArrayList(CURRENCY_LIST, mCurrencyList);
     }
 
 
