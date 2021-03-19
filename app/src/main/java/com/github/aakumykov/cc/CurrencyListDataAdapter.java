@@ -12,12 +12,12 @@ import com.github.aakumykov.cc.data_models.Currency;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurrencyList_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CurrencyListDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<Currency> mCurrencyList;
 
 
-    public CurrencyList_DataAdapter() {
+    public CurrencyListDataAdapter() {
         mCurrencyList = new ArrayList<>();
     }
 

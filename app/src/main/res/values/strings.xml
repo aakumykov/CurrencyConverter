@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">Currency rate + converter</string>
     <string name="updating_data">Updating data</string>
-    <string name="number_error">Not a bumber</string>
-    <string name="converter_dialog_input_hint">Converted value</string>
+    <string name="number_error">Not a number</string>
+    <string name="converter_dialog_input_hint">Enter currency value</string>
     <string name="refresh_data_first">Refresh list first</string>
     <string name="device_id_offline">Device is offline</string>
     <string name="info_view_text">Data from %1$s</string>
     <string name="info_view_pattern">MMMM dd yyyy, HH:mm</string>
+    <string name="result_view_placeholder">Result will be here</string>
 </resources>

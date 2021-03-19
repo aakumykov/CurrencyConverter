@@ -156,8 +156,10 @@ public class ConverterDialogFragment extends DialogFragment {
         if (null == mSelectedCurrency1 || null == mSelectedCurrency2)
             return;
 
+        String placeholderText = getString(R.string.result_view_placeholder);
+
         if (null == mEnteredNumber) {
-            displayedResult = "";
+            displayedResult = placeholderText;
         }
         else if (mEnteredNumber > 0) {
             displayedResult = makeConvertion();
@@ -169,7 +171,7 @@ public class ConverterDialogFragment extends DialogFragment {
             displayedResult = getString(R.string.number_error);
         }
         else {
-            displayedResult = "";
+            displayedResult = placeholderText;
         }
 
         mConversionResultView.setText(displayedResult);

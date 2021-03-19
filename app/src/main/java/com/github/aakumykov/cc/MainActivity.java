@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mViewBinding;
     private MainViewModel mViewModel;
-    private CurrencyList_DataAdapter mListAdapter;
+    private CurrencyListDataAdapter mListAdapter;
     private ConverterDialogFragmentFactory mDialogFragmentFactory;
     private ConverterDialogFragment mDialogFragment;
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mViewBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mViewBinding.getRoot());
 
-        mListAdapter = new CurrencyList_DataAdapter();
+        mListAdapter = new CurrencyListDataAdapter();
 
         mViewBinding.recyclerView.setAdapter(mListAdapter);
         mViewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
