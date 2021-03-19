@@ -26,14 +26,10 @@ import java.util.List;
 
 public class ConverterDialogFragment extends DialogFragment {
 
-    public interface iFragmentStateCallbacks {
-        List<Currency> onDialogCreated();
-    }
-
     private static final String TAG = ConverterDialogFragment.class.getSimpleName();
     private static final String ENTERED_NUMBER = "ENTERED_NUMBER";
 
-    private List<Currency> mCurencyList = new ArrayList<>();
+    private List<Currency> mStringList = new ArrayList<>();
 
     private ArrayAdapter mArrayAdapter1;
     private ArrayAdapter mArrayAdapter2;
@@ -49,11 +45,10 @@ public class ConverterDialogFragment extends DialogFragment {
     private Currency mSelectedCurrency1;
     private Currency mSelectedCurrency2;
 
-    private iFragmentStateCallbacks mCallbacks;
 
-
-    public ConverterDialogFragment(iFragmentStateCallbacks callbacks) {
-        mCallbacks = callbacks;
+    public ConverterDialogFragment(List<Currency> stringList) {
+        mStringList.clear();
+        mStringList.addAll(stringList);
     }
 
 
@@ -64,10 +59,6 @@ public class ConverterDialogFragment extends DialogFragment {
         if (null != savedInstanceState) {
             mEnteredNumber = savedInstanceState.getFloat(ENTERED_NUMBER);
         }
-
-        List<Currency> list = new ArrayList<>(mCallbacks.onDialogCreated());
-        mCurencyList.clear();
-        mCurencyList.addAll(list);
 
         // TODO: попробовать platform-версию AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -112,10 +103,10 @@ public class ConverterDialogFragment extends DialogFragment {
             swapCurrencyValues();
         });
 
-        mArrayAdapter1 = new CurrencyArrayAdapter(getContext(), -1, mCurencyList);
+        mArrayAdapter1 = new CurrencyArrayAdapter(getContext(), -1, mStringList);
         mArrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        mArrayAdapter2 = new CurrencyArrayAdapter(getContext(), -1, mCurencyList);
+        mArrayAdapter2 = new CurrencyArrayAdapter(getContext(), -1, mStringList);
         mArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mSpinner1 = view.findViewById(R.id.spinner1);
@@ -124,7 +115,7 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSelectedCurrency1 = mCurencyList.get(position);
+                mSelectedCurrency1 = mStringList.get(position);
                 performConvertion();
             }
 
@@ -137,7 +128,7 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSelectedCurrency2 = mCurencyList.get(position);
+                mSelectedCurrency2 = mStringList.get(position);
                 performConvertion();
             }
 
