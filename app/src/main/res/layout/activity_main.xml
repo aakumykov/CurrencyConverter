@@ -8,34 +8,20 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/progressMessageView"
+        android:id="@+id/infoView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        tools:text="Данные обновлены: сегодня"
         android:textAlignment="center"
-        android:textColor="@color/teal_200"
-        android:textSize="16sp"
-        android:visibility="gone"
+        android:textSize="14sp"
+        android:paddingHorizontal="2dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="3dp"
+        android:textColor="@color/white"
+        tools:background="@color/info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Сообщение о процессе"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/errorMessageView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:textAlignment="center"
-        android:textColor="@color/error"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/progressMessageView"
-        tools:text="Сообщение об ошибке"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -46,24 +32,10 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/errorMessageView"
+        app:layout_constraintTop_toBottomOf="@id/infoView"
         tools:visibility="visible" />
 
-    <TextView
-        android:id="@+id/infoView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:text="Данные обновлены: сегодня"
-        android:textAlignment="center"
-        android:textSize="14sp"
-        android:paddingHorizontal="2dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="3dp"
-        android:background="@color/infoViewBgColor"
-        android:textColor="@color/infoViewFgColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/progressBar" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -72,7 +44,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoView" />
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <ImageView
         android:id="@+id/converterLauncherView"

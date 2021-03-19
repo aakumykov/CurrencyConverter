@@ -8,10 +8,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="info">@color/teal_700</color>
     <color name="error">#EF5350</color>
+    <color name="progress">@color/teal_700</color>
 
-    <color name="infoViewBgColor">@color/purple_200</color>
-    <color name="infoViewFgColor">#FFFFFF</color>
+<!--    <color name="infoViewBgColor">@color/teal_700</color>-->
+<!--    <color name="infoViewFgColor">#FFFFFF</color>-->
 
     <color name="converterLauncherBackground">#F4EEFB</color>
     <color name="converterLauncherBorder">@color/purple_200</color>

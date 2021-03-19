@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -101,28 +100,25 @@ public class MainActivity extends AppCompatActivity {
 
         mViewModel.getProgressMessage().observe(this, stringResourceId -> {
             if (mViewModel.refreshIsRunning())
-                showProgressMessage(stringResourceId);
+                showProgress(stringResourceId);
         });
     }
 
-    private void showProgressMessage(int stringResourceId) {
-        mViewBinding.progressMessageView.setText(stringResourceId);
-        showView(mViewBinding.progressMessageView);
-        showView(mViewBinding.progressBar);
+
+    private void showProgress(int stringResourceId) {
+        showProgressBar();
+        showMessage(stringResourceId, R.color.progress);
     }
 
-    private void hideProgressMessage() {
-        mViewBinding.progressMessageView.setText("");
-        hideView(mViewBinding.progressMessageView);
-        hideView(mViewBinding.progressBar);
+    private void showInfo(String text) {
+        hideProgressBar();
+        showMessage(text, R.color.info);
     }
 
     private void showError(String s) {
-        hideProgressMessage();
-        mViewBinding.errorMessageView.setText(s);
-        showView(mViewBinding.errorMessageView);
+        hideProgressBar();
+        showMessage(s, R.color.error);
     }
-
 
     private void showConverterDialog() {
 
@@ -147,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void updateCurrencyInDialog(CurrencyBoard currencyBoard) {
         mDialogFragmentFactory.updateCurrencyList(currencyBoard.getCurrencyList());
         if (null != mDialogFragment)
@@ -154,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayCurrencyBoard(CurrencyBoard currencyBoard) {
-        hideProgressMessage();
 
         mListAdapter.setList(currencyBoard.getCurrencyList());
 
@@ -165,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
         String infoViewText = getString(R.string.info_view_text, dateString);
 
-        mViewBinding.infoView.setText(infoViewText);
+        showInfo(infoViewText);
     }
 
     private void onRefreshClicked() {
@@ -198,13 +194,23 @@ public class MainActivity extends AppCompatActivity {
         return dividerItemDecoration;
     }
 
-    private void showView(@Nullable View view) {
-        if (null != view)
-            view.setVisibility(View.VISIBLE);
+
+
+    private void showMessage(int stringResourceId, int colorId) {
+        showMessage(getString(stringResourceId), colorId);
     }
 
-    private void hideView(@Nullable View view) {
-        if (null != view)
-            view.setVisibility(View.GONE);
+    private void showMessage(String text, int colorId) {
+        mViewBinding.infoView.setText(text);
+        mViewBinding.infoView.setBackgroundColor(getResources().getColor(colorId));
     }
+
+    private void showProgressBar() {
+        mViewBinding.progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        mViewBinding.progressBar.setVisibility(View.GONE);
+    }
+
 }
