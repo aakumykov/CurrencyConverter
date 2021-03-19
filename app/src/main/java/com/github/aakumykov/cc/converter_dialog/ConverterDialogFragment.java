@@ -187,8 +187,8 @@ public class ConverterDialogFragment extends DialogFragment {
 
         float result = (mEnteredNumber * value1) / value2;
 
-//            int resultInt = Math.round(result * 10000);
-//            float result = resultInt / 10000F;
+//        int resultInt = Math.round(result * 10000);
+//        result = resultInt / 10000F;
 
         return String.valueOf(result);
     }
