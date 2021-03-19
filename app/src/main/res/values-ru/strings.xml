@@ -5,4 +5,5 @@
     <string name="number_error">Не число</string>
     <string name="converter_dialog_input_hint">Сумма для конвертации</string>
     <string name="refresh_data_first">Сначала обновите список</string>
+    <string name="device_id_offline">Нет подключения к интернету</string>
 </resources>

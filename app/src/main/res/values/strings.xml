@@ -4,4 +4,5 @@
     <string name="number_error">Not a bumber</string>
     <string name="converter_dialog_input_hint">Converted value</string>
     <string name="refresh_data_first">Refresh list first</string>
+    <string name="device_id_offline">Device is offline</string>
 </resources>

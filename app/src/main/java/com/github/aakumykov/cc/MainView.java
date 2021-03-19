@@ -1,6 +1,9 @@
 package com.github.aakumykov.cc;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,7 +67,7 @@ public class MainView extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (R.id.actionRefresh == item.getItemId()) {
-            mViewModel.onRefreshRequested();
+            onRefreshClicked();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -182,6 +185,14 @@ public class MainView extends AppCompatActivity {
     }
 
 
+    private void onRefreshClicked() {
+        if (networkIsAvailable())
+            mViewModel.onRefreshRequested();
+        else {
+            showToast(R.string.device_id_offline);
+        }
+    }
+
     private void onConverterLauncherClicked() {
         showConvertionDialog();
     }
@@ -222,6 +233,13 @@ public class MainView extends AppCompatActivity {
 
     private void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean networkIsAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     private RecyclerView.ItemDecoration prepareItemDecoration() {
