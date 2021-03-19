@@ -20,6 +20,14 @@ public class Currency implements Parcelable {
 
     public Currency() {}
 
+    // Конструктор для создания "фиктивной валюты"
+    public Currency(String name, String charCode, int nominal, float value) {
+        this.name = name;
+        this.charCode = charCode;
+        this.nominal = nominal;
+        this.value = value;
+    }
+
 
     public String getId() {
         return id;

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ConverterDialogFragmentFactory extends FragmentFactory {
 
-    private List<Currency> mCurrencyList;
+    private final List<Currency> mCurrencyList;
 
     public ConverterDialogFragmentFactory() {
         mCurrencyList = new ArrayList<>();
@@ -25,5 +25,12 @@ public class ConverterDialogFragmentFactory extends FragmentFactory {
     public void updateCurrencyList(List<Currency> currencyList) {
         mCurrencyList.clear();
         mCurrencyList.addAll(currencyList);
+
+        addRussianRubleToList();
+    }
+
+    private void addRussianRubleToList() {
+        Currency russianRuble = new Currency("Российский рубль", "RUB", 1, 1);
+        mCurrencyList.add(0, russianRuble);
     }
 }

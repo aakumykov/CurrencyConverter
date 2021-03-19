@@ -133,7 +133,7 @@ public class ConverterDialogFragment extends DialogFragment {
         mSpinner1.setAdapter(arrayAdapter);
         mSpinner2.setAdapter(arrayAdapter);
 
-//        mSpinner2.setSelection(2);
+        preselectUsualCurrencies();
 
         builder.setView(view);
         return builder.create();
@@ -189,7 +189,6 @@ public class ConverterDialogFragment extends DialogFragment {
         return String.valueOf(result);
     }
 
-
     private void swapCurrencyValues() {
         int oldPosition1 = mSpinner1.getSelectedItemPosition();
         mSpinner1.setSelection(mSpinner2.getSelectedItemPosition());
@@ -198,5 +197,24 @@ public class ConverterDialogFragment extends DialogFragment {
         mNumberInput.setText(mConversionResultView.getText());
 
         onConverterValuesChanged();
+    }
+
+    private void preselectUsualCurrencies() {
+        int rubIndex = findCurrencyIndex("RUB");
+        if (rubIndex >= 0)
+            mSpinner1.setSelection(rubIndex);
+
+        int usdIndex = findCurrencyIndex("USD");
+        if (usdIndex >= 0)
+            mSpinner2.setSelection(usdIndex);
+    }
+
+    private int findCurrencyIndex(String charCode) {
+        for (int i=0; i<mCurrencyList.size(); i++) {
+            Currency currency = mCurrencyList.get(i);
+            if (charCode.equals(currency.getCharCode()))
+                return i;
+        }
+        return -1;
     }
 }
