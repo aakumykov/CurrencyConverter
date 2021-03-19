@@ -9,7 +9,7 @@ import com.github.aakumykov.cc.data_models.Currency;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConverterDialogFragmentFactory extends FragmentFactory {
+public class ConverterDialogFragmentFactory extends FragmentFactory implements ConverterDialogFragment.iFragmentStateCallbacks {
 
     private List<Currency> mCurrencyList;
 
@@ -19,11 +19,16 @@ public class ConverterDialogFragmentFactory extends FragmentFactory {
 
     @NonNull @Override
     public Fragment instantiate(@NonNull ClassLoader classLoader, @NonNull String className) {
-        return new ConverterDialogFragment(mCurrencyList);
+        return new ConverterDialogFragment(this);
     }
 
     public void updateCurrencyList(List<Currency> currencyList) {
         mCurrencyList.clear();
         mCurrencyList.addAll(currencyList);
+    }
+
+    @Override
+    public List<Currency> onDialogCreated() {
+        return mCurrencyList;
     }
 }
