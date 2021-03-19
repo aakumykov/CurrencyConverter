@@ -1,10 +1,13 @@
 package com.github.aakumykov.cc.data_models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Currency {
+public class Currency implements Parcelable {
 
     @SerializedName("ID") private String id;
     @SerializedName("Name") private String name;
@@ -51,4 +54,25 @@ public class Currency {
     public String toString() {
         return Currency.class.getSimpleName() + " { " + this.charCode + " }";
     }
+
+
+    // Parcelable
+    private final static String CREATOR = Currency.class.getSimpleName();
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeInt(numCode);
+        dest.writeString(charCode);
+        dest.writeInt(nominal);
+        dest.writeFloat(value);
+        dest.writeFloat(prevValue);
+    }
+
 }
