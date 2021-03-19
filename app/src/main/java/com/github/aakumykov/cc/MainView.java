@@ -11,12 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.aakumykov.cc.converter_dialog.ConverterDialogFragment;
+import com.github.aakumykov.cc.converter_dialog.ConverterDialogFragmentFactory;
 import com.github.aakumykov.cc.data_models.CurrencyBoard;
 import com.github.aakumykov.cc.databinding.ActivityMainBinding;
 
@@ -27,14 +31,22 @@ import java.util.Locale;
 public class MainView extends AppCompatActivity {
 
     private final String TAG = MainView.class.getSimpleName();
+    private static final String FRAGMENT_TAG = "converter_dialog";
+
     private ActivityMainBinding mViewBinding;
     private MainViewModel mViewModel;
     private CurrencyList_DataAdapter mListAdapter;
     private Menu mMenu;
     private iItemClickListener mItemClickListener;
+    private ConverterDialogFragmentFactory mDialogFragmentFactory;
+    private ConverterDialogFragment mDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        mDialogFragmentFactory = new ConverterDialogFragmentFactory();
+        getSupportFragmentManager().setFragmentFactory(mDialogFragmentFactory);
+
         super.onCreate(savedInstanceState);
         prepareView();
         prepareViewModel();
@@ -107,6 +119,7 @@ public class MainView extends AppCompatActivity {
             @Override
             public void onChanged(CurrencyBoard currencyBoard) {
                 displayCurrencyBoard(currencyBoard);
+                updateCurrencyInDialog(currencyBoard);
             }
         });
 
@@ -170,9 +183,37 @@ public class MainView extends AppCompatActivity {
 
 
     private void onConverterLauncherClicked() {
-        showToast("Конвертер валют");
+        showConvertionDialog();
     }
 
+    private void showConvertionDialog() {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        Fragment fragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
+
+        if (null == fragment)
+        {
+             mDialogFragmentFactory =
+                    (ConverterDialogFragmentFactory) fragmentManager.getFragmentFactory();
+
+            /*mDialogFragmentFactory.updateCurrencyList(
+                    mViewModel.getCurrencyBoard().getValue().getCurrencyList()
+            );*/
+
+            mDialogFragment = (ConverterDialogFragment)
+                    mDialogFragmentFactory
+                    .instantiate(getClassLoader(), ConverterDialogFragment.class.getName());
+
+            mDialogFragment.show(getSupportFragmentManager(), FRAGMENT_TAG);
+        }
+    }
+
+    private void updateCurrencyInDialog(CurrencyBoard currencyBoard) {
+        mDialogFragmentFactory.updateCurrencyList(currencyBoard.getCurrencyList());
+        if (null != mDialogFragment)
+            mDialogFragment.performConvertion();
+    }
 
     // TODO: уведомление об устаревших данных
     private void showToast(int stringResourceId) {

@@ -52,7 +52,7 @@ public class CurrencyViewHolder extends RecyclerView.ViewHolder {
 
         Picasso.get()
                 .load(flagImageURL)
-                .error(R.drawable.ic_country_flag_placeholder)
+                .error(R.drawable.ic_flag_placeholder)
                 .into(mFlagView);
     }
 }

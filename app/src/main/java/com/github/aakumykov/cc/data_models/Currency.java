@@ -1,5 +1,7 @@
 package com.github.aakumykov.cc.data_models;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Currency {
@@ -12,7 +14,9 @@ public class Currency {
     @SerializedName("Value") private float value;
     @SerializedName("Previous") private float prevValue;
 
+
     public Currency() {}
+
 
     public String getId() {
         return id;
@@ -40,5 +44,11 @@ public class Currency {
 
     public float getPrevValue() {
         return prevValue;
+    }
+
+
+    @NonNull @Override
+    public String toString() {
+        return Currency.class.getSimpleName() + " { " + this.charCode + " }";
     }
 }

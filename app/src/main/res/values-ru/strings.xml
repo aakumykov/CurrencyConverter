@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">Курс + конвертер валют</string>
     <string name="updating_data">Обновляем данные</string>
+    <string name="number_error">Не число</string>
+    <string name="converter_dialog_input_hint">Сумма для конвертации</string>
+    <string name="refresh_data_first">Сначала обновите список</string>
 </resources>
