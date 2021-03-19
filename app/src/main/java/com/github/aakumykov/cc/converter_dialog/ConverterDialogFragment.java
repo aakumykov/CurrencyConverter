@@ -60,10 +60,9 @@ public class ConverterDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = requireActivity().getLayoutInflater().inflate(R.layout.dialog_layout, null);
 
-        mNumberInput = view.findViewById(R.id.numberInput);
-        View swapValuesWidget = view.findViewById(R.id.swapValuesWidget);
         mConversionResultView = view.findViewById(R.id.conversionResultView);
 
+        mNumberInput = view.findViewById(R.id.numberInput);
         mNumberInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -95,15 +94,12 @@ public class ConverterDialogFragment extends DialogFragment {
             }
         });
 
-        swapValuesWidget.setOnClickListener(v -> {
+        view.findViewById(R.id.swapValuesWidget).setOnClickListener(v -> {
             swapCurrencyValues();
         });
 
-        ArrayAdapter arrayAdapter1 = new CurrencyArrayAdapter(getContext(), -1, mCurrencyList);
-        arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        ArrayAdapter arrayAdapter2 = new CurrencyArrayAdapter(getContext(), -1, mCurrencyList);
-        arrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<Currency> arrayAdapter = new CurrencyArrayAdapter(getContext(), -1, mCurrencyList);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mSpinner1 = view.findViewById(R.id.spinner1);
         mSpinner2 = view.findViewById(R.id.spinner2);
@@ -134,8 +130,8 @@ public class ConverterDialogFragment extends DialogFragment {
             }
         });
 
-        mSpinner1.setAdapter(arrayAdapter1);
-        mSpinner2.setAdapter(arrayAdapter1);
+        mSpinner1.setAdapter(arrayAdapter);
+        mSpinner2.setAdapter(arrayAdapter);
 
 //        mSpinner2.setSelection(2);
 
