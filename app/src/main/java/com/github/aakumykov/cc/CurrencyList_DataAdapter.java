@@ -14,7 +14,8 @@ import java.util.List;
 
 public class CurrencyList_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Currency> mCurrencyList;
+    private final List<Currency> mCurrencyList;
+
 
     public CurrencyList_DataAdapter() {
         mCurrencyList = new ArrayList<>();
@@ -31,8 +32,7 @@ public class CurrencyList_DataAdapter extends RecyclerView.Adapter<RecyclerView.
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
-        CurrencyViewHolder currencyViewHolder = new CurrencyViewHolder(itemView);
-        return currencyViewHolder;
+        return new CurrencyViewHolder(itemView);
     }
 
     @Override
