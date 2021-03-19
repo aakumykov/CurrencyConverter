@@ -28,7 +28,6 @@ import com.github.aakumykov.cc.data_models.CurrencyBoard;
 import com.github.aakumykov.cc.databinding.ActivityMainBinding;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 public class MainView extends AppCompatActivity {
@@ -97,7 +96,7 @@ public class MainView extends AppCompatActivity {
         mViewBinding.recyclerView.addItemDecoration(prepareItemDecoration());
 
         mViewBinding.converterLauncherView.setOnClickListener(v -> {
-            onConverterLauncherClicked();
+            showConvertionDialog();
         });
     }
 
@@ -142,30 +141,6 @@ public class MainView extends AppCompatActivity {
         });
     }
 
-    private void disableRefreshMenu() {
-        if (null != mMenu) {
-            MenuItem menuItem = mMenu.findItem(R.id.actionRefresh);
-            if (null != menuItem)
-                menuItem.setEnabled(false);
-        }
-    }
-
-    private void enableRefreshMenu() {
-        if (null != mMenu) {
-            MenuItem menuItem = mMenu.findItem(R.id.actionRefresh);
-            if (null != menuItem)
-                menuItem.setEnabled(true);
-        }
-    }
-
-    private void showRefreshThrobber() {
-        mViewBinding.progressBar.setVisibility(View.VISIBLE);
-    }
-
-    private void hideRefreshThrobber() {
-        mViewBinding.progressBar.setVisibility(View.GONE);
-    }
-
     private void showProgressMessage(int stringResourceId) {
         mViewBinding.progressMessageView.setText(stringResourceId);
         showView(mViewBinding.progressMessageView);
@@ -184,18 +159,6 @@ public class MainView extends AppCompatActivity {
         showView(mViewBinding.errorMessageView);
     }
 
-
-    private void onRefreshClicked() {
-        if (networkIsAvailable())
-            mViewModel.onRefreshRequested();
-        else {
-            showToast(R.string.device_id_offline);
-        }
-    }
-
-    private void onConverterLauncherClicked() {
-        showConvertionDialog();
-    }
 
     private void showConvertionDialog() {
 
@@ -226,13 +189,25 @@ public class MainView extends AppCompatActivity {
             mDialogFragment.onConverterValuesChanged();
     }
 
-    // TODO: уведомление об устаревших данных
-    private void showToast(int stringResourceId) {
-        Toast.makeText(this, stringResourceId, Toast.LENGTH_SHORT).show();
+    private void displayCurrencyBoard(CurrencyBoard currencyBoard) {
+        hideProgressMessage();
+
+        mListAdapter.setList(currencyBoard.getCurrencyList());
+
+        mViewBinding.infoView.setText(
+                new SimpleDateFormat(
+                        "Данные от dd MMMM yyyy, HH:mm",
+                        new Locale("ru","RU")
+                ).format(currencyBoard.getTimestamp())
+        );
     }
 
-    private void showToast(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    private void onRefreshClicked() {
+        if (networkIsAvailable())
+            mViewModel.onRefreshRequested();
+        else {
+            Toast.makeText(this, R.string.device_id_offline, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private boolean networkIsAvailable() {
@@ -255,24 +230,6 @@ public class MainView extends AppCompatActivity {
 
         dividerItemDecoration.setDrawable(drawable);
         return dividerItemDecoration;
-    }
-
-    private void displayCurrencyBoard(CurrencyBoard currencyBoard) {
-        hideProgressMessage();
-
-        mListAdapter.setList(currencyBoard.getCurrencyList());
-
-        mViewBinding.infoView.setText(
-                new SimpleDateFormat(
-                        "Данные от dd MMMM yyyy, HH:mm",
-                        new Locale("ru","RU")
-                ).format(currencyBoard.getTimestamp())
-        );
-    }
-
-    private String date2string(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", new Locale("ru","RU"));
-        return format.format(date);
     }
 
     private void showView(@Nullable View view) {
