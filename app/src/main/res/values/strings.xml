@@ -5,4 +5,6 @@
     <string name="converter_dialog_input_hint">Converted value</string>
     <string name="refresh_data_first">Refresh list first</string>
     <string name="device_id_offline">Device is offline</string>
+    <string name="info_view_text">Data from %1$s</string>
+    <string name="info_view_pattern">MMMM dd yyyy, HH:mm</string>
 </resources>

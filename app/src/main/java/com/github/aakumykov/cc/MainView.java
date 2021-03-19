@@ -158,12 +158,14 @@ public class MainView extends AppCompatActivity {
 
         mListAdapter.setList(currencyBoard.getCurrencyList());
 
-        mViewBinding.infoView.setText(
-                new SimpleDateFormat(
-                        "Данные от dd MMMM yyyy, HH:mm",
-                        new Locale("ru","RU")
-                ).format(currencyBoard.getTimestamp())
-        );
+        String dateString = new SimpleDateFormat(
+                getString(R.string.info_view_pattern),
+                Locale.getDefault()
+        ).format(currencyBoard.getTimestamp());
+
+        String infoViewText = getString(R.string.info_view_text, dateString);
+
+        mViewBinding.infoView.setText(infoViewText);
     }
 
     private void onRefreshClicked() {

@@ -6,4 +6,6 @@
     <string name="converter_dialog_input_hint">Сумма для конвертации</string>
     <string name="refresh_data_first">Сначала обновите список</string>
     <string name="device_id_offline">Нет подключения к интернету</string>
+    <string name="info_view_text">Данные от %1$s</string>
+    <string name="info_view_pattern">dd MMMM yyyy, HH:mm</string>
 </resources>
