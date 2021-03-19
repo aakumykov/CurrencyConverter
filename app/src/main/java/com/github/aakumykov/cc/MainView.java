@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,14 +31,11 @@ import java.util.Locale;
 
 public class MainView extends AppCompatActivity {
 
-    private final String TAG = MainView.class.getSimpleName();
     private static final String FRAGMENT_TAG = "converter_dialog";
 
     private ActivityMainBinding mViewBinding;
     private MainViewModel mViewModel;
     private CurrencyList_DataAdapter mListAdapter;
-    private Menu mMenu;
-    private iItemClickListener mItemClickListener;
     private ConverterDialogFragmentFactory mDialogFragmentFactory;
     private ConverterDialogFragment mDialogFragment;
 
@@ -58,7 +54,6 @@ public class MainView extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        mMenu = menu;
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
@@ -84,49 +79,29 @@ public class MainView extends AppCompatActivity {
         mViewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mViewBinding.recyclerView.addItemDecoration(prepareItemDecoration());
 
-        mViewBinding.converterLauncherView.setOnClickListener(v -> {
-            showConvertionDialog();
-        });
+        mViewBinding.converterLauncherView.setOnClickListener(v -> showConverterDialog());
     }
 
     private void prepareViewModel() {
-//        mViewModel = new ViewModelProvider.NewInstanceFactory().create(MainViewModel.class);
-//        mViewModel = new ViewModelProvider(this, new MainViewModelFactory()).get(MainViewModel.class);
-//        mViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication())
-//        .create(MainViewModel.class);
 
         mViewModel = new ViewModelProvider(this, new MainViewModelFactory(getApplication()))
                 .get(MainViewModel.class);
-
-        // TODO: брать из настроек
-        mViewModel.setDataSourceURL("https://www.cbr-xml-daily.ru/daily_json.js");
 
         getLifecycle().addObserver(mViewModel);
     }
 
     private void prepareLiveData() {
 
-        mViewModel.getCurrencyBoard().observe(this, new Observer<CurrencyBoard>() {
-            @Override
-            public void onChanged(CurrencyBoard currencyBoard) {
-                displayCurrencyBoard(currencyBoard);
-                updateCurrencyInDialog(currencyBoard);
-            }
+        mViewModel.getCurrencyBoard().observe(this, currencyBoard -> {
+            displayCurrencyBoard(currencyBoard);
+            updateCurrencyInDialog(currencyBoard);
         });
 
-        mViewModel.getErrorMsg().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                showError(s);
-            }
-        });
+        mViewModel.getErrorMsg().observe(this, this::showError);
 
-        mViewModel.getProgressMessage().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer stringResourceId) {
-                if (mViewModel.refreshIsRunning())
-                    showProgressMessage(stringResourceId);
-            }
+        mViewModel.getProgressMessage().observe(this, stringResourceId -> {
+            if (mViewModel.refreshIsRunning())
+                showProgressMessage(stringResourceId);
         });
     }
 
@@ -149,7 +124,7 @@ public class MainView extends AppCompatActivity {
     }
 
 
-    private void showConvertionDialog() {
+    private void showConverterDialog() {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 

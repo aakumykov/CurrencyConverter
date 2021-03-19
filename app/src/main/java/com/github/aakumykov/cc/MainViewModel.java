@@ -1,5 +1,6 @@
 package com.github.aakumykov.cc;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
@@ -20,9 +21,12 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
     private final MutableLiveData<Integer> mProgressMessageLiveData;
     private final MutableLiveData<String> mErrorMessageLiveData;
 
-    private String mDataSourceURL;
+    private final String mDataSourceURL = "https://www.cbr-xml-daily.ru/daily_json.js";
     private CurrencyBoardProvider mCurrencyBoardProvider;
     private boolean mRefreshIsRunning = false;
+
+    // Хранит контекст приложения, так что утечки памяти не возникает.
+    @SuppressLint("StaticFieldLeak")
     private final Context mAppContext;
 
 
@@ -34,11 +38,6 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
         mCurrencyBoardLiveData = new MutableLiveData<>();
         mProgressMessageLiveData = new MutableLiveData<>();
         mErrorMessageLiveData = new MutableLiveData<>();
-    }
-
-
-    public void setDataSourceURL(String s) {
-        mDataSourceURL = s;
     }
 
 
@@ -74,6 +73,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
         if (null == mCurrencyBoardLiveData.getValue())
             loadData();
     }
+
 
     private void loadData() {
         CurrencyBoard existingCB = mCurrencyBoardLiveData.getValue();
@@ -135,9 +135,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
             return;
         }
 
-        handler.post(() -> {
-            mCurrencyBoardLiveData.setValue(currencyBoard);
-        });
+        handler.post(() -> mCurrencyBoardLiveData.setValue(currencyBoard));
 
         if (isDataFromNetwork)
             CachedDataManager.saveStringToCache(stringData, mAppContext, null);
