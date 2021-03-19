@@ -29,7 +29,7 @@ import com.github.aakumykov.cc.databinding.ActivityMainBinding;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class MainView extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String FRAGMENT_TAG = "converter_dialog";
 
